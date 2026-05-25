@@ -1,19 +1,54 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { portfolio, type PortfolioItem } from '../data/content'
 
-const filters = ['Все', 'Разработка', 'SMM'] as const
-type Filter = (typeof filters)[number]
+type Filter = 'Все' | 'Разработка' | 'SMM'
+
+const filters: Filter[] = ['Все', 'Разработка', 'SMM']
+
+const pathToFilter: Record<string, Filter> = {
+  '/': 'Все',
+  '/devprojects': 'Разработка',
+  '/smmprojects': 'SMM',
+}
+
+const filterToPath: Record<Filter, string> = {
+  Все: '/',
+  Разработка: '/devprojects',
+  SMM: '/smmprojects',
+}
 
 export default function Portfolio() {
-  const [active, setActive] = useState<Filter>('Все')
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const active: Filter = pathToFilter[location.pathname] ?? 'Все'
+
+  // Scroll to portfolio section if user lands directly on a filter URL
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      const id = window.setTimeout(() => {
+        document
+          .getElementById('portfolio')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 250)
+      return () => window.clearTimeout(id)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleSetFilter = (f: Filter) => {
+    if (f === active) return
+    navigate(filterToPath[f])
+  }
 
   const list =
     active === 'Все' ? portfolio : portfolio.filter((p) => p.category === active)
 
   return (
-    <section id="portfolio" className="relative py-24 lg:py-32 bg-white">
+    <section id="portfolio" className="relative py-24 lg:py-32 bg-white scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -35,7 +70,6 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Filter pills */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -46,7 +80,7 @@ export default function Portfolio() {
           {filters.map((f) => (
             <button
               key={f}
-              onClick={() => setActive(f)}
+              onClick={() => handleSetFilter(f)}
               className={`relative px-6 py-2.5 rounded-full text-sm font-semibold transition-colors ${
                 active === f
                   ? 'text-white'
@@ -65,7 +99,6 @@ export default function Portfolio() {
           ))}
         </motion.div>
 
-        {/* Grid */}
         <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
           <AnimatePresence mode="popLayout">
             {list.map((item, i) => (
@@ -144,12 +177,10 @@ function ProjectVisual({ item }: { item: PortfolioItem }) {
         transition={{ type: 'spring' }}
         className="relative"
       >
-        {/* Glow */}
         <div
           className="absolute inset-0 blur-2xl rounded-full opacity-40"
           style={{ background: item.accent }}
         />
-        {/* Card */}
         <div className="relative px-10 py-8 rounded-3xl bg-white shadow-xl border border-neutral-100 min-w-[180px] text-center">
           <div
             className="text-4xl font-extrabold mb-2 tracking-tight"
@@ -162,7 +193,6 @@ function ProjectVisual({ item }: { item: PortfolioItem }) {
           </div>
         </div>
 
-        {/* Floating dots */}
         <motion.div
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3, repeat: Infinity }}

@@ -1,3 +1,4 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,26 +9,41 @@ import Partners from './components/Partners'
 import CTA from './components/CTA'
 import Footer from './components/Footer'
 import ContactModal from './components/ContactModal'
+import ServiceDetailModal from './components/ServiceDetailModal'
 import { ModalProvider } from './context/ModalContext'
+
+function Home() {
+  return (
+    <div className="relative min-h-screen bg-white">
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Services />
+        <Process />
+        <Portfolio />
+        <Partners />
+        <CTA />
+      </main>
+      <Footer />
+      <ContactModal />
+      <ServiceDetailModal />
+    </div>
+  )
+}
 
 function App() {
   return (
-    <ModalProvider>
-      <div className="relative min-h-screen bg-white">
-        <Navbar />
-        <main>
-          <Hero />
-          <About />
-          <Services />
-          <Process />
-          <Portfolio />
-          <Partners />
-          <CTA />
-        </main>
-        <Footer />
-        <ContactModal />
-      </div>
-    </ModalProvider>
+    <BrowserRouter>
+      <ModalProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/devprojects" element={<Home />} />
+          <Route path="/smmprojects" element={<Home />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </ModalProvider>
+    </BrowserRouter>
   )
 }
 
