@@ -1,0 +1,117 @@
+import { motion } from 'framer-motion'
+import { Instagram, Facebook, Send, ArrowUp } from 'lucide-react'
+import { contacts, nav } from '../data/content'
+import { useModal } from '../context/ModalContext'
+
+export default function Footer() {
+  const { open: openModal } = useModal()
+  return (
+    <footer className="bg-neutral-50 border-t border-neutral-200 pt-20 pb-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-neutral-200">
+          <div>
+            <a href="#top" className="flex items-baseline group">
+              <span className="text-4xl font-extrabold text-brand-600 group-hover:scale-105 transition-transform inline-block">
+                We
+              </span>
+              <span className="text-4xl font-extrabold text-neutral-900">brand</span>
+            </a>
+            <p className="mt-6 max-w-md text-neutral-600 text-lg leading-relaxed">
+              Комплексные digital-решения для бизнеса в Душанбе. Сайты, дизайн, SMM и продвижение.
+            </p>
+
+            <div className="mt-8 space-y-2">
+              <a
+                href={`mailto:${contacts.email}`}
+                className="block text-neutral-700 hover:text-brand-600 transition-colors font-medium"
+              >
+                {contacts.email}
+              </a>
+              <a
+                href={`tel:${contacts.phoneRaw}`}
+                className="block text-neutral-700 hover:text-brand-600 transition-colors font-medium"
+              >
+                {contacts.phone}
+              </a>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-start lg:items-end gap-8">
+            <nav className="flex flex-wrap gap-x-8 gap-y-3">
+              {nav.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-neutral-700 hover:text-brand-600 transition-colors font-semibold"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
+            <motion.button
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={openModal}
+              className="px-8 py-4 rounded-full bg-neutral-900 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow"
+            >
+              Напишите нам
+            </motion.button>
+
+            <div className="flex gap-3">
+              {[
+                { Icon: Instagram, href: contacts.socials.instagram, label: 'Instagram' },
+                { Icon: TikTokIcon, href: contacts.socials.tiktok, label: 'TikTok' },
+                { Icon: Send, href: contacts.socials.telegram, label: 'Telegram' },
+                { Icon: WhatsappIcon, href: contacts.socials.whatsapp, label: 'WhatsApp' },
+                { Icon: Facebook, href: contacts.socials.facebook, label: 'Facebook' },
+              ].map(({ Icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  whileHover={{ y: -3, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href={href}
+                  aria-label={label}
+                  className="w-11 h-11 rounded-full bg-white border border-neutral-200 hover:border-brand-600 hover:text-brand-600 flex items-center justify-center text-neutral-700 transition-colors"
+                >
+                  <Icon className="w-5 h-5" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-neutral-500">
+          <p>© 2025 «ВиБренд». Все права защищены.</p>
+          <div className="flex items-center gap-6">
+            <p>Создано с любовью в Душанбе.</p>
+            <motion.a
+              whileHover={{ y: -3 }}
+              href="#top"
+              className="w-10 h-10 rounded-full bg-white border border-neutral-200 hover:border-brand-600 hover:text-brand-600 flex items-center justify-center transition-colors"
+              aria-label="Наверх"
+            >
+              <ArrowUp className="w-4 h-4" />
+            </motion.a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.51A8.16 8.16 0 0 0 21.5 10V6.6Z" />
+    </svg>
+  )
+}
+
+function WhatsappIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.2-.7.1c-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1-1.1 2.6 0 1.5 1.1 3 1.3 3.2.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.2-.7.2-1.4.2-1.5-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.2-1.4c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.9-1.4-1.3-3-1.3-4.6 0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2c.1 4.6-3.6 8.6-8.1 8.6z" />
+    </svg>
+  )
+}
