@@ -120,7 +120,7 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       transition={{ duration: 0.5, delay: (index % 6) * 0.06 }}
       whileHover={{ y: -8 }}
-      className="group relative rounded-3xl overflow-hidden bg-white border border-neutral-200 hover:border-brand-600 hover:shadow-2xl hover:shadow-brand-600/10 transition-all"
+      className="group relative h-full flex flex-col rounded-3xl overflow-hidden bg-white border border-neutral-200 hover:border-brand-600 hover:shadow-2xl hover:shadow-brand-600/10 transition-all"
     >
       <div
         className="relative aspect-[4/3] overflow-hidden"
@@ -137,7 +137,7 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
         </div>
       </div>
 
-      <div className="p-6 lg:p-7">
+      <div className="p-6 lg:p-7 flex-1 flex flex-col">
         <h3 className="text-xl font-bold text-neutral-900 leading-tight">
           {item.name}{' '}
           <span className="text-neutral-400 font-normal text-base">
@@ -159,21 +159,23 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
           ))}
         </div>
 
-        {item.url ? (
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 w-full py-3.5 rounded-full bg-brand-600 text-white font-semibold flex items-center justify-center gap-2 group-hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20 group-hover:shadow-xl group-hover:shadow-brand-600/30"
-          >
-            Смотреть кейс
-            <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
-        ) : (
-          <div className="mt-6 w-full py-3.5 rounded-full bg-neutral-100 text-neutral-500 font-semibold flex items-center justify-center gap-2 cursor-not-allowed">
-            Кейс скоро
-          </div>
-        )}
+        <div className="mt-auto pt-6">
+          {item.url ? (
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 rounded-full bg-brand-600 text-white font-semibold flex items-center justify-center gap-2 group-hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20 group-hover:shadow-xl group-hover:shadow-brand-600/30"
+            >
+              Смотреть кейс
+              <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          ) : (
+            <div className="w-full py-3.5 rounded-full bg-neutral-100 text-neutral-500 font-semibold flex items-center justify-center gap-2 cursor-not-allowed">
+              Кейс скоро
+            </div>
+          )}
+        </div>
       </div>
     </motion.article>
   )
