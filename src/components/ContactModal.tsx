@@ -87,7 +87,7 @@ export default function ContactModal() {
               type="button"
               onClick={handleCancel}
               aria-label="Закрыть"
-              className="absolute top-5 right-5 w-9 h-9 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors"
+              className="absolute top-4 right-4 z-30 w-11 h-11 rounded-full hover:bg-neutral-100 active:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors touch-manipulation"
             >
               <X className="w-5 h-5" />
             </button>

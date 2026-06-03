@@ -60,12 +60,13 @@ export default function ServiceDetailModal() {
             {/* Header gradient */}
             <div className="relative bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 p-8 sm:p-10 text-white overflow-hidden">
               <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)] pointer-events-none" />
 
               <button
+                type="button"
                 onClick={closeServiceDetail}
                 aria-label="Закрыть"
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur flex items-center justify-center text-white transition-colors"
+                className="absolute top-4 right-4 z-30 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 active:bg-white/30 backdrop-blur flex items-center justify-center text-white transition-colors touch-manipulation"
               >
                 <X className="w-5 h-5" />
               </button>
