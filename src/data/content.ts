@@ -425,12 +425,13 @@ export const portfolio: PortfolioItem[] = [
   {
     id: 7,
     name: "Loftory",
-    subtitle: "мебель и столы",
-    description: "Контент и визуал для локального бренда мебели с фокусом на стиль и продукт.",
-    category: "SMM",
-    tags: ["Instagram", "Product", "Visual"],
-    accent: "#92400E",
+    subtitle: "мебель и столы в стиле Loft",
+    description: "Сайт-каталог мебели и столов из металла и ЛДСП. Индивидуальный заказ, рассрочка и доставка по Душанбе.",
+    category: "Разработка",
+    tags: ["Website", "Catalog", "Furniture"],
+    accent: "#1F2937",
     logo: "/logos/loftory.webp",
+    url: "https://www.loftory.tj/",
   },
   {
     id: 8,
