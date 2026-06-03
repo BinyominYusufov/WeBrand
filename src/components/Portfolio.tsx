@@ -181,16 +181,27 @@ function ProjectVisual({ item }: { item: PortfolioItem }) {
           className="absolute inset-0 blur-2xl rounded-full opacity-40"
           style={{ background: item.accent }}
         />
-        <div className="relative px-10 py-8 rounded-3xl bg-white shadow-xl border border-neutral-100 min-w-[180px] text-center">
-          <div
-            className="text-4xl font-extrabold mb-2 tracking-tight"
-            style={{ color: item.accent }}
-          >
-            {initials}
-          </div>
-          <div className="text-[10px] text-neutral-500 uppercase tracking-widest font-semibold">
-            {item.category}
-          </div>
+        <div className="relative w-44 h-32 rounded-3xl bg-white shadow-xl border border-neutral-100 flex items-center justify-center overflow-hidden">
+          {item.logo ? (
+            <img
+              src={item.logo}
+              alt={item.name}
+              className="max-h-20 max-w-[140px] object-contain"
+              loading="lazy"
+            />
+          ) : (
+            <div className="text-center px-6">
+              <div
+                className="text-4xl font-extrabold mb-2 tracking-tight"
+                style={{ color: item.accent }}
+              >
+                {initials}
+              </div>
+              <div className="text-[10px] text-neutral-500 uppercase tracking-widest font-semibold">
+                {item.category}
+              </div>
+            </div>
+          )}
         </div>
 
         <motion.div

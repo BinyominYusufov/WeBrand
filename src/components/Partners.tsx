@@ -1,7 +1,14 @@
 import { motion } from 'framer-motion'
-import { partners } from '../data/content'
+import { partners, type Partner } from '../data/content'
 
 export default function Partners() {
+  const withLogo = partners.filter((p) => p.logo)
+  const withoutLogo = partners.filter((p) => !p.logo)
+
+  // Distribute partners across 2 rows for visual balance
+  const row1 = [...withLogo, ...withoutLogo.slice(0, Math.ceil(withoutLogo.length / 2))]
+  const row2 = [...withoutLogo.slice(Math.ceil(withoutLogo.length / 2)), ...withLogo]
+
   return (
     <section className="relative py-24 lg:py-32 bg-neutral-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -30,13 +37,13 @@ export default function Partners() {
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-neutral-50 to-transparent z-10 pointer-events-none" />
 
         <div className="flex gap-5 mb-5 animate-marquee w-max">
-          {[...partners, ...partners].map((p, i) => (
-            <PartnerCard key={`a-${i}`} name={p} />
+          {[...row1, ...row1].map((p, i) => (
+            <PartnerCard key={`a-${i}`} partner={p} />
           ))}
         </div>
         <div className="flex gap-5 animate-marquee-reverse w-max">
-          {[...partners, ...partners].reverse().map((p, i) => (
-            <PartnerCard key={`b-${i}`} name={p} variant="dark" />
+          {[...row2, ...row2].map((p, i) => (
+            <PartnerCard key={`b-${i}`} partner={p} variant="dark" />
           ))}
         </div>
       </div>
@@ -45,31 +52,44 @@ export default function Partners() {
 }
 
 function PartnerCard({
-  name,
+  partner,
   variant = 'light',
 }: {
-  name: string
+  partner: Partner
   variant?: 'light' | 'dark'
 }) {
   const isDark = variant === 'dark'
   return (
     <motion.div
-      whileHover={{ y: -4, scale: 1.03 }}
-      className={`shrink-0 px-10 py-7 rounded-2xl border min-w-[220px] flex items-center justify-center transition-all group ${
+      whileHover={{ y: -4, scale: 1.04 }}
+      className={`shrink-0 h-28 px-8 rounded-2xl border min-w-[200px] flex items-center justify-center transition-all group ${
         isDark
           ? 'bg-neutral-900 border-neutral-800 hover:border-brand-500'
           : 'bg-white border-neutral-200 hover:border-brand-600 hover:shadow-lg'
       }`}
     >
-      <span
-        className={`text-xl font-bold transition-colors ${
-          isDark
-            ? 'text-white group-hover:text-brand-400'
-            : 'text-neutral-700 group-hover:text-brand-600'
-        }`}
-      >
-        {name}
-      </span>
+      {partner.logo ? (
+        <img
+          src={partner.logo}
+          alt={partner.name}
+          className={`max-h-16 max-w-[140px] object-contain transition-all ${
+            isDark
+              ? 'brightness-110 grayscale group-hover:grayscale-0'
+              : 'grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100'
+          }`}
+          loading="lazy"
+        />
+      ) : (
+        <span
+          className={`text-xl font-bold transition-colors ${
+            isDark
+              ? 'text-white group-hover:text-brand-400'
+              : 'text-neutral-700 group-hover:text-brand-600'
+          }`}
+        >
+          {partner.name}
+        </span>
+      )}
     </motion.div>
   )
 }

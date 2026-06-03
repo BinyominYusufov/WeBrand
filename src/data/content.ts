@@ -330,6 +330,7 @@ export type PortfolioItem = {
   category: "Разработка" | "SMM"
   tags: string[]
   accent: string
+  logo?: string
 }
 
 export const portfolio: PortfolioItem[] = [
@@ -341,6 +342,7 @@ export const portfolio: PortfolioItem[] = [
     category: "Разработка",
     tags: ["Website", "Healthcare", "UX"],
     accent: "#14B8A6",
+    logo: "/logos/khotiri-jam.png",
   },
   {
     id: 2,
@@ -359,6 +361,7 @@ export const portfolio: PortfolioItem[] = [
     category: "Разработка",
     tags: ["Marketplace", "E-commerce", "Web App"],
     accent: "#EC4899",
+    logo: "/logos/todo.png",
   },
   {
     id: 4,
@@ -377,6 +380,7 @@ export const portfolio: PortfolioItem[] = [
     category: "Разработка",
     tags: ["E-commerce", "Catalog", "Platform"],
     accent: "#F59E0B",
+    logo: "/logos/getup.jpg",
   },
   {
     id: 6,
@@ -386,6 +390,7 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Instagram", "Visual", "Brand"],
     accent: "#1F2937",
+    logo: "/logos/shakl.jpg",
   },
   {
     id: 7,
@@ -395,6 +400,7 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Instagram", "Product", "Visual"],
     accent: "#92400E",
+    logo: "/logos/loftory.webp",
   },
   {
     id: 8,
@@ -431,6 +437,7 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Food", "Delivery", "Instagram"],
     accent: "#DC2626",
+    logo: "/logos/sapporo.webp",
   },
   {
     id: 12,
@@ -443,19 +450,26 @@ export const portfolio: PortfolioItem[] = [
   },
 ]
 
-export const partners = [
-  "Корманд TJ",
-  "SHAKL",
-  "SABT",
-  "Айва",
-  "JN",
-  "LOFTORY",
-  "GetUp",
-  "АСАН",
-  "Армут",
-  "STAR",
-  "SAPPORO",
-  "BARF",
+export type Partner = {
+  name: string
+  logo?: string
+}
+
+export const partners: Partner[] = [
+  { name: "Корманд TJ", logo: "/logos/kormand.png" },
+  { name: "SHAKL", logo: "/logos/shakl.jpg" },
+  { name: "SABT" },
+  { name: "Айва" },
+  { name: "JN" },
+  { name: "LOFTORY", logo: "/logos/loftory.webp" },
+  { name: "GetUp", logo: "/logos/getup.jpg" },
+  { name: "АСАН" },
+  { name: "Армут" },
+  { name: "STAR" },
+  { name: "SAPPORO", logo: "/logos/sapporo.webp" },
+  { name: "BARF" },
+  { name: "Khotiri Jam", logo: "/logos/khotiri-jam.png" },
+  { name: "Todo", logo: "/logos/todo.png" },
 ]
 
 export const contacts = {
