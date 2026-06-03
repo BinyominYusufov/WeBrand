@@ -352,6 +352,7 @@ export const portfolio: PortfolioItem[] = [
     category: "Разработка",
     tags: ["SaaS", "CRM", "Booking"],
     accent: "#8B5CF6",
+    logo: "/logos/sabt.png",
   },
   {
     id: 3,
@@ -428,6 +429,7 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["SaaS", "Instagram", "Education"],
     accent: "#7C3AED",
+    logo: "/logos/sabt.png",
   },
   {
     id: 11,
@@ -458,7 +460,7 @@ export type Partner = {
 export const partners: Partner[] = [
   { name: "Корманд TJ", logo: "/logos/kormand.png" },
   { name: "SHAKL", logo: "/logos/shakl.jpg" },
-  { name: "SABT" },
+  { name: "SABT", logo: "/logos/sabt.png" },
   { name: "Айва" },
   { name: "JN" },
   { name: "LOFTORY", logo: "/logos/loftory.webp" },
