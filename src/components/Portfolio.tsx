@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { portfolio, type PortfolioItem } from '../data/content'
+import InstagramPreview from './InstagramPreview'
 
 type Filter = 'Все' | 'Разработка' | 'SMM'
 
@@ -124,13 +125,19 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
     >
       <div
         className="relative aspect-[4/3] overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${item.accent}15, ${item.accent}05 50%, #ffffff)`,
-        }}
+        style={
+          item.instagram
+            ? undefined
+            : { background: `linear-gradient(135deg, ${item.accent}15, ${item.accent}05 50%, #ffffff)` }
+        }
       >
-        <ProjectVisual item={item} />
+        {item.instagram ? (
+          <InstagramPreview data={item.instagram} />
+        ) : (
+          <ProjectVisual item={item} />
+        )}
 
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-3 left-3 z-10">
           <span className="px-3 py-1.5 rounded-full bg-white/95 backdrop-blur text-xs font-bold text-neutral-900 shadow-sm">
             {item.category}
           </span>

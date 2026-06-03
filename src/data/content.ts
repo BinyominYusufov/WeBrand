@@ -322,6 +322,28 @@ export const services: Service[] = [
   },
 ]
 
+export type IgHighlight = {
+  label: string
+  icon: string
+}
+
+export type InstagramData = {
+  username: string
+  bioTitle?: string
+  category?: string
+  bio: string[]
+  link?: string
+  posts: string
+  followers: string
+  following: string
+  ring?: "gradient" | "none"
+  avatar?: string
+  avatarBg?: string
+  avatarLetter?: string
+  accent: string
+  highlights: IgHighlight[]
+}
+
 export type PortfolioItem = {
   id: number
   name: string
@@ -333,6 +355,7 @@ export type PortfolioItem = {
   logo?: string
   url?: string
   initials?: string
+  instagram?: InstagramData
 }
 
 export const portfolio: PortfolioItem[] = [
@@ -419,8 +442,33 @@ export const portfolio: PortfolioItem[] = [
     description: "SMM и визуал для бренда интерьеров: позиционирование и привлечение премиум-аудитории.",
     category: "SMM",
     tags: ["Instagram", "Visual", "Brand"],
-    accent: "#1F2937",
+    accent: "#9C2228",
     logo: "/logos/shakl.jpg",
+    url: "https://www.instagram.com/shakl.tj/",
+    instagram: {
+      username: "shakl.tj",
+      bioTitle: "SHAKL | Дизайн интерьеров | Ремонт под ключ",
+      category: "Предприниматель",
+      bio: [
+        "🏢 Строительно-дизайнерское бюро",
+        "🎨 Интерьеры под ключ: от идеи до сдачи",
+        "👤 Индивидуальный подход под ваш бюджет",
+      ],
+      link: "shakl.tj",
+      posts: "34",
+      followers: "526",
+      following: "4",
+      ring: "none",
+      avatar: "/logos/shakl.jpg",
+      accent: "#9C2228",
+      highlights: [
+        { label: "Реализация", icon: "Award" },
+        { label: "Проекты", icon: "Layers" },
+        { label: "Дизайн", icon: "Palette" },
+        { label: "О нас", icon: "Users" },
+        { label: "Отзывы", icon: "Heart" },
+      ],
+    },
   },
   {
     id: 7,
@@ -440,7 +488,32 @@ export const portfolio: PortfolioItem[] = [
     description: "Продвижение ресторана: контент, вовлечённость и формирование лояльной аудитории.",
     category: "SMM",
     tags: ["Restaurant", "Instagram", "Engagement"],
-    accent: "#0891B2",
+    accent: "#1D4ED8",
+    url: "https://www.instagram.com/armut.cafe/",
+    instagram: {
+      username: "armut.cafe",
+      bioTitle: "Armut Cafe",
+      bio: [
+        "• Частичка Турции в городе Душанбе",
+        "• Вкуснейшие турецкие блюда",
+        "🕐 08:00–23:00",
+        "📍 ул. Борбад 1, ориентир: коммерческий…",
+      ],
+      posts: "277",
+      followers: "6 021",
+      following: "2",
+      ring: "none",
+      avatarBg: "#1D4ED8",
+      avatarLetter: "А",
+      accent: "#1D4ED8",
+      highlights: [
+        { label: "Еда", icon: "UtensilsCrossed" },
+        { label: "Меню", icon: "BookOpen" },
+        { label: "Отзыв", icon: "MessageCircle" },
+        { label: "Адрес", icon: "MapPin" },
+        { label: "Доставка", icon: "Truck" },
+      ],
+    },
   },
   {
     id: 9,
@@ -449,7 +522,34 @@ export const portfolio: PortfolioItem[] = [
     description: "SMM и визуал для корпоративных и персональных подарков.",
     category: "SMM",
     tags: ["Instagram", "Sales", "Brand"],
-    accent: "#B91C1C",
+    accent: "#7C1D1D",
+    url: "https://www.instagram.com/barf.dushanbe/",
+    instagram: {
+      username: "barf.dushanbe",
+      bioTitle: "BARF | Корп. & индив. подарки",
+      category: "Магазин подарков",
+      bio: [
+        "🎁 Корпоративные и персональные подарочные боксы",
+        "💳 Оплата: р/счёт, Alif Salom, онлайн, наличные",
+        "📞 +992 98 582 9367…",
+      ],
+      link: "barf.tj",
+      posts: "6",
+      followers: "12",
+      following: "2",
+      ring: "none",
+      avatarBg: "#7C1D1D",
+      avatarLetter: "B",
+      accent: "#7C1D1D",
+      highlights: [
+        { label: "Контакты", icon: "Phone" },
+        { label: "Индивид.", icon: "User" },
+        { label: "Процесс", icon: "GitBranch" },
+        { label: "Корп.", icon: "Briefcase" },
+        { label: "О нас", icon: "Award" },
+        { label: "Отзывы", icon: "ThumbsUp" },
+      ],
+    },
   },
   {
     id: 10,
@@ -458,8 +558,34 @@ export const portfolio: PortfolioItem[] = [
     description: "Контент и объяснение продукта для сервиса онлайн-записи и автоматизации.",
     category: "SMM",
     tags: ["SaaS", "Instagram", "Education"],
-    accent: "#7C3AED",
+    accent: "#5B21B6",
     logo: "/logos/sabt.png",
+    url: "https://www.instagram.com/sabt.online.tj/",
+    instagram: {
+      username: "sabt.online.tj",
+      bioTitle: "Sabt.tj",
+      category: "Товар/услуга",
+      bio: [
+        "Онлайн-запись | Напоминания | Гибкий график",
+        "Для всех тех, кто работает по записи!",
+        "Сервис, который упрощает жизнь",
+      ],
+      link: "sabt.tj и ещё 2",
+      posts: "43",
+      followers: "522",
+      following: "2",
+      ring: "none",
+      avatar: "/logos/sabt.png",
+      accent: "#5B21B6",
+      highlights: [
+        { label: "Team", icon: "Users" },
+        { label: "Backstage", icon: "Camera" },
+        { label: "Как раб.", icon: "MousePointerClick" },
+        { label: "Партнёры", icon: "Handshake" },
+        { label: "Сотруд.", icon: "Handshake" },
+        { label: "Тарифы", icon: "DollarSign" },
+      ],
+    },
   },
   {
     id: 11,
@@ -468,8 +594,33 @@ export const portfolio: PortfolioItem[] = [
     description: "Продвижение доставки еды: визуал, акции и постоянная коммуникация.",
     category: "SMM",
     tags: ["Food", "Delivery", "Instagram"],
-    accent: "#DC2626",
+    accent: "#991B1B",
     logo: "/logos/sapporo.webp",
+    url: "https://www.instagram.com/sapporo_dushanbe/",
+    instagram: {
+      username: "sapporo_dushanbe",
+      bioTitle: "СУШИ | РОЛЛЫ | ДОСТАВКА | ДУШАНБЕ",
+      category: "Ресторан японской кухни",
+      bio: [
+        "• Единственное кафе японской кухни в Таджикистане 🥢",
+        "• БЫСТРАЯ ДОСТАВКА | 10:00–22:00 🍱",
+        "• +992 99 100 0101…",
+      ],
+      posts: "277",
+      followers: "12,9 тыс.",
+      following: "1",
+      ring: "gradient",
+      avatar: "/logos/sapporo.webp",
+      accent: "#991B1B",
+      highlights: [
+        { label: "YOU", icon: "Users" },
+        { label: "MENU", icon: "BookOpen" },
+        { label: "ROLLS", icon: "UtensilsCrossed" },
+        { label: "ATMSPH", icon: "Building2" },
+        { label: "DELIVERY", icon: "ShoppingBag" },
+        { label: "LOCATION", icon: "MapPin" },
+      ],
+    },
   },
   {
     id: 12,
@@ -478,7 +629,35 @@ export const portfolio: PortfolioItem[] = [
     description: "Контент для медицинской клиники: доверие, экспертиза и услуги.",
     category: "SMM",
     tags: ["Healthcare", "Instagram", "Trust"],
-    accent: "#059669",
+    accent: "#047857",
+    url: "https://www.instagram.com/asan_dushanbe/",
+    instagram: {
+      username: "asan_dushanbe",
+      bioTitle: "КЛИНИКА «АСАН»",
+      category: "Здоровье/красота",
+      bio: [
+        "• Все виды операций",
+        "• Лазерная коррекция LASIK",
+        "• Лучшие врачи Индии и Таджикистана",
+        "📍 112, Gafurov 10/8, Dushanbe",
+      ],
+      posts: "271",
+      followers: "4 130",
+      following: "5",
+      ring: "gradient",
+      avatarBg: "#FFFFFF",
+      avatarLetter: "А",
+      accent: "#047857",
+      highlights: [
+        { label: "Врачи", icon: "Users" },
+        { label: "О клинике", icon: "Building2" },
+        { label: "Косогл.", icon: "Eye" },
+        { label: "Адрес", icon: "MapPin" },
+        { label: "Контакты", icon: "Phone" },
+        { label: "Обслед.", icon: "Search" },
+        { label: "Хирургия", icon: "Stethoscope" },
+      ],
+    },
   },
 ]
 
