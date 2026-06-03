@@ -390,6 +390,17 @@ export const portfolio: PortfolioItem[] = [
     url: "https://getup.tj/",
   },
   {
+    id: 13,
+    name: "Grant China",
+    subtitle: "образование в Китае без посредников",
+    description: "Сайт для поступления в топ-университеты Китая: языковые курсы, колледж, бакалавриат и магистратура. Полное сопровождение от выбора программы до зачисления.",
+    category: "Разработка",
+    tags: ["Website", "Education", "Lead-gen"],
+    accent: "#DC2626",
+    logo: "/logos/grantchina.png",
+    url: "https://www.grantchina.tj/",
+  },
+  {
     id: 6,
     name: "SHAKL",
     subtitle: "дизайн интерьеров",
@@ -478,6 +489,7 @@ export const partners: Partner[] = [
   { name: "BARF" },
   { name: "Khotiri Jam", logo: "/logos/khotiri-jam.png" },
   { name: "Todo", logo: "/logos/todo.png" },
+  { name: "Grant China", logo: "/logos/grantchina.png" },
 ]
 
 export const contacts = {
