@@ -331,6 +331,7 @@ export type PortfolioItem = {
   tags: string[]
   accent: string
   logo?: string
+  url?: string
 }
 
 export const portfolio: PortfolioItem[] = [
@@ -343,6 +344,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["Website", "Healthcare", "UX"],
     accent: "#14B8A6",
     logo: "/logos/khotiri-jam.png",
+    url: "https://www.khotirijam.tj/",
   },
   {
     id: 2,
@@ -353,6 +355,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["SaaS", "CRM", "Booking"],
     accent: "#8B5CF6",
     logo: "/logos/sabt.png",
+    url: "https://sabt.tj/",
   },
   {
     id: 3,
@@ -363,6 +366,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["Marketplace", "E-commerce", "Web App"],
     accent: "#EC4899",
     logo: "/logos/todo.png",
+    url: "https://todo.tj/",
   },
   {
     id: 4,
@@ -372,6 +376,7 @@ export const portfolio: PortfolioItem[] = [
     category: "Разработка",
     tags: ["Landing", "Brand", "E-commerce"],
     accent: "#DC2626",
+    url: "https://www.barf.tj/",
   },
   {
     id: 5,
@@ -382,6 +387,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["E-commerce", "Catalog", "Platform"],
     accent: "#F59E0B",
     logo: "/logos/getup.jpg",
+    url: "https://getup.tj/",
   },
   {
     id: 6,

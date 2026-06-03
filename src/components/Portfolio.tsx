@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { portfolio, type PortfolioItem } from '../data/content'
 
@@ -159,10 +159,21 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
           ))}
         </div>
 
-        <button className="mt-6 w-full py-3.5 rounded-full bg-brand-600 text-white font-semibold flex items-center justify-center gap-2 group-hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20 group-hover:shadow-xl group-hover:shadow-brand-600/30">
-          Смотреть кейс
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </button>
+        {item.url ? (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 w-full py-3.5 rounded-full bg-brand-600 text-white font-semibold flex items-center justify-center gap-2 group-hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/20 group-hover:shadow-xl group-hover:shadow-brand-600/30"
+          >
+            Смотреть кейс
+            <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        ) : (
+          <div className="mt-6 w-full py-3.5 rounded-full bg-neutral-100 text-neutral-500 font-semibold flex items-center justify-center gap-2 cursor-not-allowed">
+            Кейс скоро
+          </div>
+        )}
       </div>
     </motion.article>
   )
