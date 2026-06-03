@@ -180,7 +180,7 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
 }
 
 function ProjectVisual({ item }: { item: PortfolioItem }) {
-  const initials = item.name.slice(0, 4).toUpperCase()
+  const initials = item.initials ?? item.name.slice(0, 4).toUpperCase()
   return (
     <div className="absolute inset-0 flex items-center justify-center p-6">
       <motion.div

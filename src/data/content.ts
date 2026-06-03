@@ -332,6 +332,7 @@ export type PortfolioItem = {
   accent: string
   logo?: string
   url?: string
+  initials?: string
 }
 
 export const portfolio: PortfolioItem[] = [
@@ -388,6 +389,17 @@ export const portfolio: PortfolioItem[] = [
     accent: "#F59E0B",
     logo: "/logos/getup.jpg",
     url: "https://getup.tj/",
+  },
+  {
+    id: 14,
+    name: "iram.cinema",
+    subtitle: "кинотеатр в Душанбе",
+    description: "Сайт для самого большого и атмосферного кинотеатра Душанбе: расписание сеансов, онлайн-бронирование билетов и закрытая зона для подписчиков.",
+    category: "Разработка",
+    tags: ["Website", "Cinema", "Booking"],
+    accent: "#F97316",
+    initials: "IC",
+    url: "https://www.iramcinema.tj/",
   },
   {
     id: 13,
@@ -490,6 +502,7 @@ export const partners: Partner[] = [
   { name: "Khotiri Jam", logo: "/logos/khotiri-jam.png" },
   { name: "Todo", logo: "/logos/todo.png" },
   { name: "Grant China", logo: "/logos/grantchina.png" },
+  { name: "iram.cinema" },
 ]
 
 export const contacts = {
