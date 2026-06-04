@@ -39,22 +39,6 @@ export default function Hero() {
         style={{ opacity }}
         className="max-w-7xl mx-auto px-6 lg:px-10 w-full"
       >
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex justify-center mb-8"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 border border-brand-100 text-sm font-semibold text-brand-700">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-600 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
-            </span>
-            Digital-агентство №1 в Душанбе
-          </div>
-        </motion.div>
-
         {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -65,26 +49,8 @@ export default function Hero() {
           Превращаем бизнес
           <br />
           в{' '}
-          <span className="relative inline-block">
-            <span className="bg-gradient-to-r from-brand-700 via-brand-500 to-brand-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-              digital-бренд
-            </span>
-            <svg
-              viewBox="0 0 400 12"
-              className="absolute -bottom-2 left-0 w-full"
-              fill="none"
-              preserveAspectRatio="none"
-            >
-              <motion.path
-                d="M2 7 Q 100 1, 200 7 T 398 7"
-                stroke="#2747FF"
-                strokeWidth="4"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.4, delay: 0.9, ease: 'easeInOut' }}
-              />
-            </svg>
+          <span className="bg-gradient-to-r from-brand-700 via-brand-500 to-brand-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+            digital-бренд
           </span>
         </motion.h1>
 
