@@ -10,11 +10,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-neutral-200">
           <div>
-            <a href="#top" className="flex items-baseline group">
-              <span className="text-4xl font-extrabold text-brand-600 group-hover:scale-105 transition-transform inline-block">
-                We
-              </span>
-              <span className="text-4xl font-extrabold text-neutral-900">brand</span>
+            <a href="#top" className="inline-flex items-center group">
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                src="/logos/main-logo.png"
+                alt="Webrand"
+                className="h-12 w-auto object-contain"
+              />
             </a>
             <p className="mt-6 max-w-md text-neutral-600 text-lg leading-relaxed">
               Комплексные digital-решения для бизнеса в Душанбе. Сайты, дизайн, SMM и продвижение.

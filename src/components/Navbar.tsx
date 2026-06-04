@@ -28,14 +28,13 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-baseline group select-none">
-          <motion.span
-            whileHover={{ rotate: -8 }}
-            className="text-2xl font-extrabold text-brand-600"
-          >
-            We
-          </motion.span>
-          <span className="text-2xl font-extrabold text-neutral-900">brand</span>
+        <a href="#top" className="flex items-center group select-none">
+          <motion.img
+            whileHover={{ scale: 1.05 }}
+            src="/logos/main-logo.png"
+            alt="Webrand"
+            className="h-9 sm:h-10 w-auto object-contain"
+          />
         </a>
 
         <nav className="hidden lg:flex items-center gap-10">
