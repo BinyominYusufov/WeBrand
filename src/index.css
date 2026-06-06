@@ -20,8 +20,16 @@
     text-wrap: balance;
   }
   .mask-fade-edges {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+  }
+}
+
+/* Calm the partner marquee for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
   }
 }
 

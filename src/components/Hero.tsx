@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight, Sparkles, Rocket, Zap } from 'lucide-react'
-import { heroTags, contacts } from '../data/content'
+import { heroTags } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function Hero() {
@@ -147,39 +147,6 @@ export default function Hero() {
           <div className="w-14 h-14 rounded-2xl bg-neutral-900 shadow-2xl rotate-12 flex items-center justify-center">
             <Zap className="w-6 h-6 text-brand-400" />
           </div>
-        </motion.div>
-
-        {/* Phone hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="hidden lg:flex absolute bottom-10 right-10 items-center gap-3 text-sm text-neutral-500"
-        >
-          <span>или позвоните</span>
-          <a
-            href={`tel:${contacts.phoneRaw}`}
-            className="font-semibold text-neutral-900 hover:text-brand-600 transition-colors"
-          >
-            {contacts.phone}
-          </a>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6 }}
-          className="hidden lg:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center text-xs text-neutral-500 gap-2"
-        >
-          <span className="uppercase tracking-widest">Прокрутите</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 rounded-full border-2 border-neutral-400 flex items-start justify-center p-1.5"
-          >
-            <div className="w-1 h-2 bg-neutral-400 rounded-full" />
-          </motion.div>
         </motion.div>
       </motion.div>
     </section>
