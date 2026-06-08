@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   motion,
   AnimatePresence,
@@ -16,6 +16,7 @@ export default function Navbar() {
   const [activeId, setActiveId] = useState('')
   const { open: openModal } = useModal()
   const reduce = useReducedMotion()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   // Scroll state via Framer's motion value (no per-frame window scroll listener)
   const { scrollY } = useScroll()
@@ -42,18 +43,41 @@ export default function Navbar() {
     return () => obs.disconnect()
   }, [])
 
-  // Lock body scroll + close on Esc while the mobile menu is open
+  // Lock body scroll + close on Esc + trap focus while the mobile menu is open
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    const focusables = () =>
+      Array.from(
+        menuRef.current?.querySelectorAll<HTMLElement>(
+          'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      )
+    const focusTimer = setTimeout(() => focusables()[0]?.focus(), 80)
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (e.key !== 'Tab') return
+      const nodes = focusables()
+      if (!nodes.length) return
+      const first = nodes[0]
+      const last = nodes[nodes.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
+      clearTimeout(focusTimer)
     }
   }, [open])
 
@@ -181,6 +205,7 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

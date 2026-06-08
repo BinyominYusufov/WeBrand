@@ -1,15 +1,16 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, ChevronRight } from 'lucide-react'
-import { services, type Service, type SubService } from '../data/content'
+import { services, contacts, type Service, type SubService } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function Services() {
   const { open: openModal, openServiceDetail } = useModal()
+  const reduce = useReducedMotion()
 
   return (
     <section
       id="services"
-      className="relative py-14 md:py-24 lg:py-32 bg-gradient-to-b from-white via-brand-50/30 to-white overflow-hidden"
+      className="relative scroll-mt-24 py-14 md:py-24 lg:py-32 bg-gradient-to-b from-white via-brand-50/30 to-white overflow-hidden"
     >
       <div className="absolute top-20 -right-40 w-[30rem] h-[30rem] bg-brand-600/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -55,20 +56,22 @@ export default function Services() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-10 md:mt-16 flex flex-col items-center"
         >
-          <motion.button
+          <motion.a
+            href={contacts.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.97 }}
-            onClick={openModal}
             className="group px-10 py-5 rounded-full bg-neutral-900 text-white font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow inline-flex items-center gap-3"
           >
             Написать в TG
             <motion.span
-              animate={{ x: [0, 4, 0] }}
+              animate={reduce ? undefined : { x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               →
             </motion.span>
-          </motion.button>
+          </motion.a>
           <p className="mt-3 text-sm text-neutral-500">Ответим быстро.</p>
         </motion.div>
       </div>

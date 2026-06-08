@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { portfolio, type PortfolioItem } from '../data/content'
-import InstagramPreview from './InstagramPreview'
 
 type Filter = 'Все' | 'Разработка' | 'SMM'
 
@@ -27,9 +26,9 @@ export default function Portfolio() {
 
   const active: Filter = pathToFilter[location.pathname] ?? 'Все'
 
-  // Scroll to portfolio section if user lands directly on a filter URL
+  // Scroll to portfolio section only when landing directly on a known filter URL
   useEffect(() => {
-    if (location.pathname !== '/') {
+    if (location.pathname === '/devprojects' || location.pathname === '/smmprojects') {
       const id = window.setTimeout(() => {
         document
           .getElementById('portfolio')
@@ -125,17 +124,9 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
     >
       <div
         className="relative aspect-[4/3] overflow-hidden"
-        style={
-          item.instagram
-            ? undefined
-            : { background: `linear-gradient(135deg, ${item.accent}15, ${item.accent}05 50%, #ffffff)` }
-        }
+        style={{ background: `linear-gradient(135deg, ${item.accent}15, ${item.accent}05 50%, #ffffff)` }}
       >
-        {item.instagram ? (
-          <InstagramPreview data={item.instagram} />
-        ) : (
-          <ProjectVisual item={item} />
-        )}
+        <ProjectVisual item={item} />
 
         <div className="absolute top-3 left-3 z-10">
           <span className="px-3 py-1.5 rounded-full bg-white/95 backdrop-blur text-xs font-bold text-neutral-900 shadow-sm">
@@ -190,6 +181,9 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
 
 function ProjectVisual({ item }: { item: PortfolioItem }) {
   const initials = item.initials ?? item.name.slice(0, 4).toUpperCase()
+  const [imgError, setImgError] = useState(false)
+  const reduce = useReducedMotion()
+  const showLogo = item.logo && !imgError
   return (
     <div className="absolute inset-0 flex items-center justify-center p-6">
       <motion.div
@@ -202,12 +196,13 @@ function ProjectVisual({ item }: { item: PortfolioItem }) {
           style={{ background: item.accent }}
         />
         <div className="relative w-44 h-32 rounded-3xl bg-white shadow-xl border border-neutral-100 flex items-center justify-center overflow-hidden">
-          {item.logo ? (
+          {showLogo ? (
             <img
               src={item.logo}
               alt={item.name}
               className="max-h-20 max-w-[140px] object-contain"
               loading="lazy"
+              onError={() => setImgError(true)}
             />
           ) : (
             <div className="text-center px-6">
@@ -225,13 +220,13 @@ function ProjectVisual({ item }: { item: PortfolioItem }) {
         </div>
 
         <motion.div
-          animate={{ y: [0, -8, 0] }}
+          animate={reduce ? undefined : { y: [0, -8, 0] }}
           transition={{ duration: 3, repeat: Infinity }}
           className="absolute -top-3 -right-3 w-6 h-6 rounded-full shadow-md"
           style={{ background: item.accent }}
         />
         <motion.div
-          animate={{ y: [0, 6, 0] }}
+          animate={reduce ? undefined : { y: [0, 6, 0] }}
           transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
           className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full bg-white border-2 shadow"
           style={{ borderColor: item.accent }}

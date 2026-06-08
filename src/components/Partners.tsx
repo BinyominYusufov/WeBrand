@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { partners, type Partner } from '../data/content'
 
@@ -101,6 +102,8 @@ function PartnerCard({
   grid?: boolean
   reduce?: boolean
 }) {
+  const [imgError, setImgError] = useState(false)
+  const showLogo = partner.logo && !imgError
   return (
     <motion.div
       whileHover={reduce ? undefined : { y: -8, scale: 1.06 }}
@@ -113,7 +116,7 @@ function PartnerCard({
           hover:shadow-[0_6px_14px_-4px_rgba(16,24,40,0.10),0_22px_48px_-16px_rgba(16,24,40,0.22),0_28px_60px_-28px_rgba(43,94,211,0.22)]
           ${grid ? '' : 'mr-5'}`}
     >
-      {partner.logo ? (
+      {showLogo ? (
         <img
           src={partner.logo}
           alt={partner.name}
@@ -124,6 +127,7 @@ function PartnerCard({
             group-hover/row:opacity-40 group-hover/row:saturate-[.45]
             group-hover/card:!opacity-100 group-hover/card:!saturate-100 group-hover/card:scale-110"
           loading="lazy"
+          onError={() => setImgError(true)}
         />
       ) : (
         <span

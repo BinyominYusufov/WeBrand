@@ -25,10 +25,17 @@
   }
 }
 
-/* Calm the partner marquee for users who prefer reduced motion */
+/* Honour reduced-motion: silence the looping/auto-playing animations */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .animate-marquee,
-  .animate-marquee-reverse {
+  .animate-marquee-reverse,
+  .animate-float,
+  .animate-float-slow,
+  .animate-float-delay,
+  .animate-gradient {
     animation: none !important;
   }
 }
@@ -47,39 +54,4 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #224EB4;
-}
-
-/* Loader animation for hero blob */
-.blob-animate {
-  animation: blob-spin 18s linear infinite;
-}
-@keyframes blob-spin {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-
-/* Custom cursor glow on buttons */
-.glow-on-hover {
-  position: relative;
-  z-index: 0;
-}
-.glow-on-hover::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, #2B5ED3, #5D86E5, #2B5ED3);
-  background-size: 200% 200%;
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s;
-  animation: gradient-move 3s ease infinite;
-}
-.glow-on-hover:hover::before {
-  opacity: 1;
-}
-@keyframes gradient-move {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }

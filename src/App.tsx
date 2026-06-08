@@ -11,6 +11,7 @@ import CTA from './components/CTA'
 import Footer from './components/Footer'
 import ContactModal from './components/ContactModal'
 import ServiceDetailModal from './components/ServiceDetailModal'
+import NotFound from './components/NotFound'
 import { ModalProvider } from './context/ModalContext'
 
 function Home() {
@@ -42,7 +43,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/devprojects" element={<Home />} />
           <Route path="/smmprojects" element={<Home />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </ModalProvider>
     </BrowserRouter>

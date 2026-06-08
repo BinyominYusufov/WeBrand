@@ -26,11 +26,9 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'float-slow': 'float 9s ease-in-out infinite',
         'float-delay': 'float 7s ease-in-out infinite 2s',
-        'pulse-slow': 'pulse 4s ease-in-out infinite',
         'gradient': 'gradient 6s ease infinite',
         'marquee': 'marquee 40s linear infinite',
         'marquee-reverse': 'marquee-reverse 40s linear infinite',
-        'spin-slow': 'spin 20s linear infinite',
       },
       keyframes: {
         float: {

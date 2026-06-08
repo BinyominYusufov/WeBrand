@@ -1,10 +1,11 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Mail, Phone, Send } from 'lucide-react'
 import { contacts } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function CTA() {
   const { open: openModal } = useModal()
+  const reduce = useReducedMotion()
   return (
     <section id="cta" className="relative py-14 md:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
@@ -17,7 +18,7 @@ export default function CTA() {
         >
           {/* Decor */}
           <motion.div
-            animate={{
+            animate={reduce ? undefined : {
               scale: [1, 1.1, 1],
               opacity: [0.3, 0.5, 0.3],
             }}
@@ -25,7 +26,7 @@ export default function CTA() {
             className="absolute top-0 right-0 w-[28rem] h-[28rem] bg-white/10 rounded-full blur-3xl"
           />
           <motion.div
-            animate={{
+            animate={reduce ? undefined : {
               scale: [1, 1.15, 1],
               opacity: [0.4, 0.6, 0.4],
             }}
@@ -43,7 +44,7 @@ export default function CTA() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20 text-sm font-semibold text-white mb-6"
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className={`w-2 h-2 rounded-full bg-emerald-400 ${reduce ? '' : 'animate-pulse'}`} />
                 Свободны для новых проектов
               </motion.div>
 
