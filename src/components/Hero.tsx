@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight, Sparkles, Rocket, Zap } from 'lucide-react'
-import { heroTags, contacts } from '../data/content'
+import { heroTags } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function Hero() {
@@ -18,7 +18,7 @@ export default function Hero() {
     <section
       id="top"
       ref={ref}
-      className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-24 pb-14 md:pt-32 md:pb-20 overflow-hidden"
     >
       {/* Background mesh */}
       <div className="absolute inset-0 -z-10">
@@ -59,13 +59,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 text-center text-lg lg:text-xl text-neutral-600 max-w-2xl mx-auto text-balance leading-relaxed"
+          className="mt-6 md:mt-10 text-center text-lg lg:text-xl text-neutral-600 max-w-2xl mx-auto text-balance leading-relaxed"
         >
           Разрабатываем сайты, выстраиваем бренд, привлекаем клиентов через SMM и контекстную рекламу. Комплексные решения, которые приносят прибыль.
         </motion.p>
 
         {/* Floating tags */}
-        <div className="relative mt-14">
+        <div className="relative mt-8 md:mt-14">
           <div className="flex flex-wrap justify-center gap-3">
             {heroTags.map((tag, i) => (
               <motion.div
@@ -92,7 +92,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
@@ -147,39 +147,6 @@ export default function Hero() {
           <div className="w-14 h-14 rounded-2xl bg-neutral-900 shadow-2xl rotate-12 flex items-center justify-center">
             <Zap className="w-6 h-6 text-brand-400" />
           </div>
-        </motion.div>
-
-        {/* Phone hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="hidden lg:flex absolute bottom-10 right-10 items-center gap-3 text-sm text-neutral-500"
-        >
-          <span>или позвоните</span>
-          <a
-            href={`tel:${contacts.phoneRaw}`}
-            className="font-semibold text-neutral-900 hover:text-brand-600 transition-colors"
-          >
-            {contacts.phone}
-          </a>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6 }}
-          className="hidden lg:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center text-xs text-neutral-500 gap-2"
-        >
-          <span className="uppercase tracking-widest">Прокрутите</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 rounded-full border-2 border-neutral-400 flex items-start justify-center p-1.5"
-          >
-            <div className="w-1 h-2 bg-neutral-400 rounded-full" />
-          </motion.div>
         </motion.div>
       </motion.div>
     </section>

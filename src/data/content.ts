@@ -443,32 +443,8 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Instagram", "Visual", "Brand"],
     accent: "#9C2228",
-    logo: "/logos/shakl.jpg",
+    logo: "/logos/shakl.png",
     url: "https://www.instagram.com/shakl.tj/",
-    instagram: {
-      username: "shakl.tj",
-      bioTitle: "SHAKL | Дизайн интерьеров | Ремонт под ключ",
-      category: "Предприниматель",
-      bio: [
-        "🏢 Строительно-дизайнерское бюро",
-        "🎨 Интерьеры под ключ: от идеи до сдачи",
-        "👤 Индивидуальный подход под ваш бюджет",
-      ],
-      link: "shakl.tj",
-      posts: "34",
-      followers: "526",
-      following: "4",
-      ring: "none",
-      avatar: "/logos/shakl.jpg",
-      accent: "#9C2228",
-      highlights: [
-        { label: "Реализация", icon: "Award" },
-        { label: "Проекты", icon: "Layers" },
-        { label: "Дизайн", icon: "Palette" },
-        { label: "О нас", icon: "Users" },
-        { label: "Отзывы", icon: "Heart" },
-      ],
-    },
   },
   {
     id: 7,
@@ -490,30 +466,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["Restaurant", "Instagram", "Engagement"],
     accent: "#1D4ED8",
     url: "https://www.instagram.com/armut.cafe/",
-    instagram: {
-      username: "armut.cafe",
-      bioTitle: "Armut Cafe",
-      bio: [
-        "• Частичка Турции в городе Душанбе",
-        "• Вкуснейшие турецкие блюда",
-        "🕐 08:00–23:00",
-        "📍 ул. Борбад 1, ориентир: коммерческий…",
-      ],
-      posts: "277",
-      followers: "6 021",
-      following: "2",
-      ring: "none",
-      avatarBg: "#1D4ED8",
-      avatarLetter: "А",
-      accent: "#1D4ED8",
-      highlights: [
-        { label: "Еда", icon: "UtensilsCrossed" },
-        { label: "Меню", icon: "BookOpen" },
-        { label: "Отзыв", icon: "MessageCircle" },
-        { label: "Адрес", icon: "MapPin" },
-        { label: "Доставка", icon: "Truck" },
-      ],
-    },
+    logo:"../../public/logos/armut.png"
   },
   {
     id: 9,
@@ -524,32 +477,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["Instagram", "Sales", "Brand"],
     accent: "#7C1D1D",
     url: "https://www.instagram.com/barf.dushanbe/",
-    instagram: {
-      username: "barf.dushanbe",
-      bioTitle: "BARF | Корп. & индив. подарки",
-      category: "Магазин подарков",
-      bio: [
-        "🎁 Корпоративные и персональные подарочные боксы",
-        "💳 Оплата: р/счёт, Alif Salom, онлайн, наличные",
-        "📞 +992 98 582 9367…",
-      ],
-      link: "barf.tj",
-      posts: "6",
-      followers: "12",
-      following: "2",
-      ring: "none",
-      avatarBg: "#7C1D1D",
-      avatarLetter: "B",
-      accent: "#7C1D1D",
-      highlights: [
-        { label: "Контакты", icon: "Phone" },
-        { label: "Индивид.", icon: "User" },
-        { label: "Процесс", icon: "GitBranch" },
-        { label: "Корп.", icon: "Briefcase" },
-        { label: "О нас", icon: "Award" },
-        { label: "Отзывы", icon: "ThumbsUp" },
-      ],
-    },
+    logo:"../../public/logos/barf.png"
   },
   {
     id: 10,
@@ -561,31 +489,6 @@ export const portfolio: PortfolioItem[] = [
     accent: "#5B21B6",
     logo: "/logos/sabt.png",
     url: "https://www.instagram.com/sabt.online.tj/",
-    instagram: {
-      username: "sabt.online.tj",
-      bioTitle: "Sabt.tj",
-      category: "Товар/услуга",
-      bio: [
-        "Онлайн-запись | Напоминания | Гибкий график",
-        "Для всех тех, кто работает по записи!",
-        "Сервис, который упрощает жизнь",
-      ],
-      link: "sabt.tj и ещё 2",
-      posts: "43",
-      followers: "522",
-      following: "2",
-      ring: "none",
-      avatar: "/logos/sabt.png",
-      accent: "#5B21B6",
-      highlights: [
-        { label: "Team", icon: "Users" },
-        { label: "Backstage", icon: "Camera" },
-        { label: "Как раб.", icon: "MousePointerClick" },
-        { label: "Партнёры", icon: "Handshake" },
-        { label: "Сотруд.", icon: "Handshake" },
-        { label: "Тарифы", icon: "DollarSign" },
-      ],
-    },
   },
   {
     id: 11,
@@ -597,30 +500,6 @@ export const portfolio: PortfolioItem[] = [
     accent: "#991B1B",
     logo: "/logos/sapporo.webp",
     url: "https://www.instagram.com/sapporo_dushanbe/",
-    instagram: {
-      username: "sapporo_dushanbe",
-      bioTitle: "СУШИ | РОЛЛЫ | ДОСТАВКА | ДУШАНБЕ",
-      category: "Ресторан японской кухни",
-      bio: [
-        "• Единственное кафе японской кухни в Таджикистане 🥢",
-        "• БЫСТРАЯ ДОСТАВКА | 10:00–22:00 🍱",
-        "• +992 99 100 0101…",
-      ],
-      posts: "277",
-      followers: "12,9 тыс.",
-      following: "1",
-      ring: "gradient",
-      avatar: "/logos/sapporo.webp",
-      accent: "#991B1B",
-      highlights: [
-        { label: "YOU", icon: "Users" },
-        { label: "MENU", icon: "BookOpen" },
-        { label: "ROLLS", icon: "UtensilsCrossed" },
-        { label: "ATMSPH", icon: "Building2" },
-        { label: "DELIVERY", icon: "ShoppingBag" },
-        { label: "LOCATION", icon: "MapPin" },
-      ],
-    },
   },
   {
     id: 12,
@@ -631,33 +510,7 @@ export const portfolio: PortfolioItem[] = [
     tags: ["Healthcare", "Instagram", "Trust"],
     accent: "#047857",
     url: "https://www.instagram.com/asan_dushanbe/",
-    instagram: {
-      username: "asan_dushanbe",
-      bioTitle: "КЛИНИКА «АСАН»",
-      category: "Здоровье/красота",
-      bio: [
-        "• Все виды операций",
-        "• Лазерная коррекция LASIK",
-        "• Лучшие врачи Индии и Таджикистана",
-        "📍 112, Gafurov 10/8, Dushanbe",
-      ],
-      posts: "271",
-      followers: "4 130",
-      following: "5",
-      ring: "gradient",
-      avatarBg: "#FFFFFF",
-      avatarLetter: "А",
-      accent: "#047857",
-      highlights: [
-        { label: "Врачи", icon: "Users" },
-        { label: "О клинике", icon: "Building2" },
-        { label: "Косогл.", icon: "Eye" },
-        { label: "Адрес", icon: "MapPin" },
-        { label: "Контакты", icon: "Phone" },
-        { label: "Обслед.", icon: "Search" },
-        { label: "Хирургия", icon: "Stethoscope" },
-      ],
-    },
+    logo:"../../public/logos/asan.png"
   },
 ]
 
@@ -668,10 +521,9 @@ export type Partner = {
 
 export const partners: Partner[] = [
   { name: "Корманд TJ", logo: "/logos/kormand.png" },
-  { name: "SHAKL", logo: "/logos/shakl.jpg" },
+  { name: "SHAKL", logo: "/logos/shakl.png" },
   { name: "SABT", logo: "/logos/sabt.png" },
   { name: "Айва", logo: "/logos/aiva.png" },
-  { name: "JN" },
   { name: "LOFTORY", logo: "/logos/loftory.webp" },
   { name: "GetUp", logo: "/logos/getup.jpg" },
   { name: "АСАН", logo: "/logos/asan.png" },
@@ -686,16 +538,81 @@ export const partners: Partner[] = [
   { name: "Javonon Group", logo: "/logos/javonon-group.png" },
 ]
 
+export type Vacancy = {
+  id: string
+  title: string
+  tagline: string
+  type: string
+  tags: string[]
+  icon: string // lucide-react icon name, mapped in Careers.tsx
+  accent: string // brand-scale token used for the role icon tint
+}
+
+export const vacancies: Vacancy[] = [
+  {
+    id: "designer",
+    title: "Дизайнер",
+    tagline: "Создаёшь визуал брендов: от логотипа и айдентики до интерфейсов сайтов и приложений.",
+    type: "Полная занятость · Душанбе",
+    tags: ["Графдизайн", "UI/UX", "Figma"],
+    icon: "Palette",
+    accent: "brand-600",
+  },
+  {
+    id: "smm",
+    title: "SMM-специалист",
+    tagline: "Ведёшь соцсети клиентов: контент-план, тексты, съёмки и вовлечение аудитории.",
+    type: "Полная занятость · Гибрид",
+    tags: ["Instagram", "Контент", "Stories"],
+    icon: "Megaphone",
+    accent: "brand-500",
+  },
+  {
+    id: "sales",
+    title: "Менеджер по продажам",
+    tagline: "Общаешься с клиентами, ведёшь сделки и помогаешь бизнесу выбрать решение.",
+    type: "Полная занятость · Офис",
+    tags: ["Переговоры", "CRM", "B2B"],
+    icon: "Handshake",
+    accent: "brand-700",
+  },
+  {
+    id: "frontend",
+    title: "Frontend-разработчик",
+    tagline: "Верстаешь и оживляешь современные адаптивные сайты на React и Tailwind.",
+    type: "Полная занятость · Удалённо",
+    tags: ["React", "TypeScript", "Tailwind"],
+    icon: "Code2",
+    accent: "brand-600",
+  },
+  {
+    id: "targetolog",
+    title: "Таргетолог",
+    tagline: "Настраиваешь рекламу в Instagram и Facebook и приносишь клиентам заявки, а не сливы бюджета.",
+    type: "Проектная занятость · Удалённо",
+    tags: ["Meta Ads", "Аналитика", "Бюджеты"],
+    icon: "Target",
+    accent: "brand-500",
+  },
+  {
+    id: "content",
+    title: "Контент-мейкер",
+    tagline: "Снимаешь и монтируешь Reels и ролики, которые набирают охваты и продают.",
+    type: "Гибкий график · Душанбе",
+    tags: ["Reels", "Съёмка", "Монтаж"],
+    icon: "Clapperboard",
+    accent: "brand-700",
+  },
+]
+
 export const contacts = {
   phone: "+992 988 64 55 43",
   phoneRaw: "+992988645543",
   email: "info@webrand.tj",
-  telegram: "https://t.me/",
+  telegram: "https://t.me/Webrandushanbe",
   socials: {
-    instagram: "#",
-    tiktok: "#",
-    telegram: "#",
-    whatsapp: "#",
-    facebook: "#",
+    telegram: "https://t.me/Webrandushanbe",
+    instagram: "https://www.instagram.com/webrand.tj",
+    whatsapp: "https://wa.me/992985829367",
   },
 }

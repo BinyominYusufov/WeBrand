@@ -6,14 +6,14 @@ import { useModal } from '../context/ModalContext'
 export default function CTA() {
   const { open: openModal } = useModal()
   return (
-    <section id="cta" className="relative py-24 lg:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="cta" className="relative py-14 md:py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 p-10 lg:p-20"
+          className="relative rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 p-7 md:p-10 lg:p-20"
         >
           {/* Decor */}
           <motion.div
@@ -34,7 +34,7 @@ export default function CTA() {
           />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
 
-          <div className="relative grid lg:grid-cols-5 gap-10 lg:gap-12 items-center">
+          <div className="relative grid lg:grid-cols-5 gap-8 md:gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-3">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion'
-import { Instagram, Facebook, Send, ArrowUp } from 'lucide-react'
+import { Instagram, Send, ArrowUp } from 'lucide-react'
 import { contacts, nav } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function Footer() {
   const { open: openModal } = useModal()
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200 pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-neutral-200">
+    <footer className="bg-neutral-50 border-t border-neutral-200 pt-12 pb-8 md:pt-20 md:pb-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-10 mb-10 pb-10 md:gap-12 md:mb-16 md:pb-16 border-b border-neutral-200">
           <div>
             <a href="#top" className="inline-flex items-center group">
               <motion.img
@@ -38,7 +38,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col items-start lg:items-end gap-8">
+          <div className="flex flex-col items-start lg:items-end gap-6 md:gap-8">
             <nav className="flex flex-wrap gap-x-8 gap-y-3">
               {nav.map((item) => (
                 <a
@@ -62,17 +62,17 @@ export default function Footer() {
 
             <div className="flex gap-3">
               {[
-                { Icon: Instagram, href: contacts.socials.instagram, label: 'Instagram' },
-                { Icon: TikTokIcon, href: contacts.socials.tiktok, label: 'TikTok' },
                 { Icon: Send, href: contacts.socials.telegram, label: 'Telegram' },
+                { Icon: Instagram, href: contacts.socials.instagram, label: 'Instagram' },
                 { Icon: WhatsappIcon, href: contacts.socials.whatsapp, label: 'WhatsApp' },
-                { Icon: Facebook, href: contacts.socials.facebook, label: 'Facebook' },
               ].map(({ Icon, href, label }) => (
                 <motion.a
                   key={label}
                   whileHover={{ y: -3, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="w-11 h-11 rounded-full bg-white border border-neutral-200 hover:border-brand-600 hover:text-brand-600 flex items-center justify-center text-neutral-700 transition-colors"
                 >
@@ -99,14 +99,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
-}
-
-function TikTokIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.51A8.16 8.16 0 0 0 21.5 10V6.6Z" />
-    </svg>
   )
 }
 

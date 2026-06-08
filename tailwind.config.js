@@ -4,17 +4,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Brand scale anchored to the Webrand logo blue (#2B5ED3 = brand-600).
+        // Constant hue (~222deg), smoothly descending lightness. 600/700 pass WCAG AA on white.
         brand: {
-          50: "#EEF2FF",
-          100: "#E0E7FF",
-          200: "#C7D2FE",
-          300: "#A5B4FC",
-          400: "#6B82FF",
-          500: "#4361FF",
-          600: "#2747FF",
-          700: "#1E3AE6",
-          800: "#1A2EB8",
-          900: "#0A0E27",
+          50: "#EFF3FE",
+          100: "#DCE5FC",
+          200: "#B9CCF8",
+          300: "#89A8F0",
+          400: "#5D86E5",
+          500: "#406FDB",
+          600: "#2B5ED3",
+          700: "#224EB4",
+          800: "#193D8F",
+          900: "#122C68",
         },
       },
       fontFamily: {

@@ -49,14 +49,14 @@ export default function Portfolio() {
     active === 'Все' ? portfolio : portfolio.filter((p) => p.category === active)
 
   return (
-    <section id="portfolio" className="relative py-24 lg:py-32 bg-white scroll-mt-24">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="portfolio" className="relative py-14 md:py-24 lg:py-32 bg-white scroll-mt-24">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-12 flex-wrap gap-6"
+          className="flex items-end justify-between mb-8 md:mb-12 flex-wrap gap-6"
         >
           <div>
             <span className="text-sm font-bold text-brand-600 uppercase tracking-[0.2em]">
@@ -76,7 +76,7 @@ export default function Portfolio() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex p-1.5 rounded-full bg-neutral-100 mb-10 border border-neutral-200"
+          className="inline-flex p-1.5 rounded-full bg-neutral-100 mb-8 md:mb-10 border border-neutral-200"
         >
           {filters.map((f) => (
             <button

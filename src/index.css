@@ -20,8 +20,16 @@
     text-wrap: balance;
   }
   .mask-fade-edges {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+  }
+}
+
+/* Calm the partner marquee for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
   }
 }
 
@@ -34,11 +42,11 @@
   background: #f5f5f5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2747FF;
+  background: #2B5ED3;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #1E3AE6;
+  background: #224EB4;
 }
 
 /* Loader animation for hero blob */
@@ -60,7 +68,7 @@
   content: '';
   position: absolute;
   inset: -2px;
-  background: linear-gradient(45deg, #2747FF, #6B82FF, #2747FF);
+  background: linear-gradient(45deg, #2B5ED3, #5D86E5, #2B5ED3);
   background-size: 200% 200%;
   border-radius: inherit;
   z-index: -1;

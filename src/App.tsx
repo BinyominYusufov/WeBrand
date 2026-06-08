@@ -6,6 +6,7 @@ import Services from './components/Services'
 import Process from './components/Process'
 import Portfolio from './components/Portfolio'
 import Partners from './components/Partners'
+import Careers from './components/Careers'
 import CTA from './components/CTA'
 import Footer from './components/Footer'
 import ContactModal from './components/ContactModal'
@@ -23,6 +24,7 @@ function Home() {
         <Process />
         <Portfolio />
         <Partners />
+        <Careers />
         <CTA />
       </main>
       <Footer />
