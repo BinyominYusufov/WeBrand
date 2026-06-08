@@ -84,7 +84,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-neutral-500">
-          <p>© 2025 «ВиБренд». Все права защищены.</p>
+          <p>© {new Date().getFullYear()} «ВиБренд». Все права защищены.</p>
           <div className="flex items-center gap-6">
             <p>Создано с любовью в Душанбе.</p>
             <motion.a

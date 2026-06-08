@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Zap, Target, Users, TrendingUp } from 'lucide-react'
+import { Zap, Target, Users, TrendingUp, ArrowRight } from 'lucide-react'
 import { useModal } from '../context/ModalContext'
 
 const values = [
@@ -28,7 +28,7 @@ const values = [
 export default function About() {
   const { open: openModal } = useModal()
   return (
-    <section id="about" className="relative py-14 md:py-24 lg:py-32 bg-white">
+    <section id="about" className="relative scroll-mt-24 py-14 md:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-start">
           <motion.div
@@ -61,7 +61,7 @@ export default function About() {
               className="mt-8 md:mt-10 inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-neutral-900 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               Обсудить проект
-              <span>→</span>
+              <ArrowRight className="w-5 h-5" />
             </motion.button>
           </motion.div>
 

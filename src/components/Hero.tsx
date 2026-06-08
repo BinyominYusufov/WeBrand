@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight, Sparkles, Rocket, Zap } from 'lucide-react'
 import { heroTags } from '../data/content'
@@ -6,6 +6,7 @@ import { useModal } from '../context/ModalContext'
 
 export default function Hero() {
   const { open: openModal } = useModal()
+  const reduce = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -41,7 +42,7 @@ export default function Hero() {
       >
         {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={reduce ? false : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center text-5xl sm:text-6xl lg:text-[7rem] font-extrabold tracking-tight text-neutral-900 leading-[1.02]"
@@ -56,7 +57,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduce ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-6 md:mt-10 text-center text-lg lg:text-xl text-neutral-600 max-w-2xl mx-auto text-balance leading-relaxed"
@@ -70,7 +71,7 @@ export default function Hero() {
             {heroTags.map((tag, i) => (
               <motion.div
                 key={tag}
-                initial={{ opacity: 0, scale: 0, y: 40 }}
+                initial={reduce ? false : { opacity: 0, scale: 0, y: 40 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{
                   duration: 0.5,
@@ -78,7 +79,7 @@ export default function Hero() {
                   type: 'spring',
                   stiffness: 120,
                 }}
-                whileHover={{ scale: 1.08, y: -4, rotate: [-1, 1, 0] }}
+                whileHover={reduce ? undefined : { scale: 1.08, y: -4, rotate: [-1, 1, 0] }}
                 className="px-6 py-3 rounded-full bg-white border border-neutral-200 shadow-sm font-semibold text-neutral-800 hover:border-brand-600 hover:text-brand-600 hover:shadow-xl hover:shadow-brand-600/10 transition-all cursor-default select-none"
               >
                 {tag}
@@ -89,13 +90,13 @@ export default function Hero() {
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduce ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
           className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
+            whileHover={reduce ? undefined : { scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={openModal}
             className="group px-8 py-4 rounded-full bg-neutral-900 text-white font-semibold shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-3"
@@ -106,7 +107,7 @@ export default function Hero() {
             </span>
           </motion.button>
           <motion.a
-            whileHover={{ scale: 1.05 }}
+            whileHover={reduce ? undefined : { scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             href="#portfolio"
             className="px-8 py-4 rounded-full bg-white border-2 border-neutral-200 hover:border-brand-600 hover:text-brand-600 font-semibold transition-colors"
@@ -117,7 +118,7 @@ export default function Hero() {
 
         {/* Floating decorative icons */}
         <motion.div
-          initial={{ opacity: 0, scale: 0 }}
+          initial={reduce ? false : { opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, type: 'spring' }}
           className="hidden lg:block absolute top-32 left-[6%] animate-float"
@@ -128,7 +129,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0 }}
+          initial={reduce ? false : { opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1, type: 'spring' }}
           className="hidden lg:block absolute top-40 right-[6%] animate-float-delay"
@@ -139,7 +140,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0 }}
+          initial={reduce ? false : { opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.2, type: 'spring' }}
           className="hidden lg:block absolute bottom-32 left-[12%] animate-float-slow"

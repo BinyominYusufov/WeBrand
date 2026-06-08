@@ -18,9 +18,11 @@ There is no linter or test runner configured. `npm run build` is the only correc
 
 ## Architecture
 
-**Single-page app, content-driven.** `App.tsx` renders one `Home` component (a fixed vertical stack of section components: Hero → About → Services → Process → Portfolio → Partners → CTA, plus Navbar/Footer and two always-mounted modals). In-page navigation uses anchor links (`#about`, `#services`, etc.) scrolling to section `id`s — not router pages.
+**Single-page app, content-driven.** `App.tsx` renders one `Home` component (a fixed vertical stack of section components: Hero → About → Services → Process → Portfolio → Partners → Careers → CTA, plus Navbar/Footer and two always-mounted modals). In-page navigation uses anchor links (`#about`, `#services`, etc.) scrolling to section `id`s — not router pages.
 
-**Content lives in `src/data/content.ts`.** This is the single source of truth for all page data: services (with nested `SubService[]`), portfolio items, partners, contacts, nav links. To change site copy or add a service/portfolio entry, edit this file rather than the components — components map over these exported arrays. Type definitions (`Service`, `SubService`, `PortfolioItem`) are exported from here and imported elsewhere.
+**Nav links and section ids are a contract.** `nav` in `content.ts` lists `{ label, href }`; each `href` (e.g. `#careers`) must match an `id` on a section rendered in `Home`, or the link is dead. `Navbar` also drives its active-link underline from these via an `IntersectionObserver` over those ids (and reads scroll state with Framer's `useScroll`/`useMotionValueEvent`, not a raw scroll listener). When adding an anchored section, give it `scroll-mt-*` so its heading clears the fixed navbar.
+
+**Content lives in `src/data/content.ts`.** This is the single source of truth for all page data: services (with nested `SubService[]`), portfolio items, partners, vacancies, contacts, nav links. To change site copy or add a service/portfolio/vacancy entry, edit this file rather than the components — components map over these exported arrays. Type definitions (`Service`, `SubService`, `PortfolioItem`, `Vacancy`, `Partner`) are exported from here and imported elsewhere.
 
 **Routing is used only for portfolio filtering, not for distinct pages.** Every route (`/`, `/devprojects`, `/smmprojects`, `*`) renders the same `Home`. `Portfolio.tsx` reads `location.pathname` and maps it to a category filter (`pathToFilter` / `filterToPath`): `/devprojects` → "Разработка", `/smmprojects` → "SMM", everything else → "Все". Clicking a filter calls `navigate()` to change the URL, and landing directly on a filter URL auto-scrolls to the `#portfolio` section. Because routing is client-side only, `vercel.json` rewrites all paths to `/` so deep links work on refresh.
 
@@ -29,6 +31,7 @@ There is no linter or test runner configured. `npm run build` is the only correc
 ## Conventions
 
 - **Styling:** Tailwind utility classes only; no CSS modules or styled-components (`src/index.css` is just Tailwind directives + a few globals). The brand color scale (`brand.50`–`brand.900`) and custom animations (`float`, `marquee`, `gradient`, etc.) are defined in `tailwind.config.js` — reuse these rather than hardcoding hex values or new keyframes.
+- **One brand blue.** The scale is anchored to the logo blue `#2B5ED3` = `brand-600`. There is exactly one blue identity on the site — always use `brand-*` tokens (or `rgba(43,94,211,…)` for glows/shadows that can't be a token), never a raw or Tailwind-default blue. Note `text-${var}`-style dynamic class names are NOT picked up by Tailwind's JIT — map to literal class strings instead.
 - **Animation:** Framer Motion for scroll-reveal and transitions; the common pattern is `initial`/`whileInView` with `viewport={{ once: true }}`. `AnimatePresence` wraps modal mount/unmount.
 - **Icons:** `lucide-react`.
 - Components are presentational and read from `content.ts` + `useModal()`; keep new data in `content.ts` rather than inlining it in JSX.

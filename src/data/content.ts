@@ -322,28 +322,6 @@ export const services: Service[] = [
   },
 ]
 
-export type IgHighlight = {
-  label: string
-  icon: string
-}
-
-export type InstagramData = {
-  username: string
-  bioTitle?: string
-  category?: string
-  bio: string[]
-  link?: string
-  posts: string
-  followers: string
-  following: string
-  ring?: "gradient" | "none"
-  avatar?: string
-  avatarBg?: string
-  avatarLetter?: string
-  accent: string
-  highlights: IgHighlight[]
-}
-
 export type PortfolioItem = {
   id: number
   name: string
@@ -355,7 +333,6 @@ export type PortfolioItem = {
   logo?: string
   url?: string
   initials?: string
-  instagram?: InstagramData
 }
 
 export const portfolio: PortfolioItem[] = [
@@ -465,8 +442,8 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Restaurant", "Instagram", "Engagement"],
     accent: "#1D4ED8",
+    logo: "/logos/armut.png",
     url: "https://www.instagram.com/armut.cafe/",
-    logo:"../../public/logos/armut.png"
   },
   {
     id: 9,
@@ -476,8 +453,8 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Instagram", "Sales", "Brand"],
     accent: "#7C1D1D",
+    logo: "/logos/barf.png",
     url: "https://www.instagram.com/barf.dushanbe/",
-    logo:"../../public/logos/barf.png"
   },
   {
     id: 10,
@@ -509,8 +486,8 @@ export const portfolio: PortfolioItem[] = [
     category: "SMM",
     tags: ["Healthcare", "Instagram", "Trust"],
     accent: "#047857",
+    logo: "/logos/asan.png",
     url: "https://www.instagram.com/asan_dushanbe/",
-    logo:"../../public/logos/asan.png"
   },
 ]
 

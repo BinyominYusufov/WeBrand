@@ -1,11 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Check, Clock, Sparkles, Target, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useModal } from '../context/ModalContext'
 
 export default function ServiceDetailModal() {
   const { serviceDetail, closeServiceDetail, open: openContact } = useModal()
   const isOpen = !!serviceDetail
+
+  const modalRef = useRef<HTMLDivElement>(null)
+  const restoreFocusRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -17,12 +20,39 @@ export default function ServiceDetailModal() {
     }
   }, [isOpen])
 
+  // Focus the dialog on open; restore focus to the trigger on close
   useEffect(() => {
     if (!isOpen) return
-    const handler = (e: KeyboardEvent) => e.key === 'Escape' && closeServiceDetail()
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [isOpen, closeServiceDetail])
+    restoreFocusRef.current = document.activeElement as HTMLElement | null
+    const t = setTimeout(() => modalRef.current?.focus(), 60)
+    return () => {
+      clearTimeout(t)
+      restoreFocusRef.current?.focus?.()
+    }
+  }, [isOpen])
+
+  // Focus trap + Esc, scoped to the dialog
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation()
+      closeServiceDetail()
+      return
+    }
+    if (e.key !== 'Tab' || !modalRef.current) return
+    const nodes = modalRef.current.querySelectorAll<HTMLElement>(
+      'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])',
+    )
+    if (!nodes.length) return
+    const first = nodes[0]
+    const last = nodes[nodes.length - 1]
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  }
 
   const handleOrder = () => {
     closeServiceDetail()
@@ -37,8 +67,7 @@ export default function ServiceDetailModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
+          onKeyDown={onKeyDown}
         >
           {/* Backdrop */}
           <motion.div
@@ -51,11 +80,16 @@ export default function ServiceDetailModal() {
 
           {/* Modal */}
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="sdm-title"
+            tabIndex={-1}
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 28, stiffness: 320 }}
-            className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto"
+            className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto outline-none"
           >
             {/* Header gradient */}
             <div className="relative bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 p-8 sm:p-10 text-white overflow-hidden">
@@ -76,7 +110,7 @@ export default function ServiceDetailModal() {
                   <Sparkles className="w-3.5 h-3.5" />
                   {serviceDetail.parent}
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05]">
+                <h2 id="sdm-title" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05]">
                   {serviceDetail.sub.title}
                 </h2>
                 <p className="mt-3 text-white/85 text-base sm:text-lg leading-relaxed max-w-xl">
