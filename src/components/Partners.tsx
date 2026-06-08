@@ -10,20 +10,20 @@ export default function Partners() {
   const row2 = partners.filter((_, i) => i % 2 === 1)
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden bg-neutral-50">
+    <section className="relative py-14 md:py-24 lg:py-32 overflow-hidden bg-neutral-50">
       {/* Single soft brand-tinted glow for depth behind the logo wall */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[460px] bg-[radial-gradient(55%_60%_at_50%_50%,rgba(39,71,255,0.07),transparent_72%)]"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-[460px] bg-[radial-gradient(55%_60%_at_50%_50%,rgba(43,94,211,0.07),transparent_72%)]"
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <span className="text-sm font-bold text-brand-600 uppercase tracking-[0.2em]">
             — Партнёры
@@ -106,12 +106,12 @@ function PartnerCard({
       whileHover={reduce ? undefined : { y: -8, scale: 1.06 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={`group/card relative shrink-0 h-28 w-52 rounded-2xl bg-white flex items-center justify-center
-        border border-neutral-200/80
-        shadow-[0_1px_2px_rgba(16,24,40,0.04),0_10px_28px_-14px_rgba(16,24,40,0.18)]
-        transition-[box-shadow,border-color] duration-300 ease-out
-        hover:z-10 hover:border-brand-300 hover:ring-1 hover:ring-brand-400/25
-        hover:shadow-[0_2px_4px_rgba(16,24,40,0.04),0_10px_24px_-8px_rgba(67,97,255,0.45),0_30px_60px_-16px_rgba(39,71,255,0.55)]
-        ${grid ? '' : 'mr-5'}`}
+          border border-neutral-200/80
+          shadow-[0_1px_2px_rgba(16,24,40,0.04),0_10px_28px_-14px_rgba(16,24,40,0.18)]
+          transition-[box-shadow,border-color,transform] duration-300 ease-out
+          hover:z-10 hover:-translate-y-1 hover:border-brand-200
+          hover:shadow-[0_6px_14px_-4px_rgba(16,24,40,0.10),0_22px_48px_-16px_rgba(16,24,40,0.22),0_28px_60px_-28px_rgba(43,94,211,0.22)]
+          ${grid ? '' : 'mr-5'}`}
     >
       {partner.logo ? (
         <img

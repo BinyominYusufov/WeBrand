@@ -2,7 +2,7 @@ export const nav = [
   { label: "О компании", href: "#about" },
   { label: "Услуги", href: "#services" },
   { label: "Портфолио", href: "#portfolio" },
-  { label: "Вакансии", href: "#vacancy" },
+  { label: "Вакансии", href: "#careers" },
 ]
 
 export const heroTags = [
@@ -521,10 +521,9 @@ export type Partner = {
 
 export const partners: Partner[] = [
   { name: "Корманд TJ", logo: "/logos/kormand.png" },
-  { name: "SHAKL", logo: "/logos/shakl.jpg" },
+  { name: "SHAKL", logo: "/logos/shakl.png" },
   { name: "SABT", logo: "/logos/sabt.png" },
   { name: "Айва", logo: "/logos/aiva.png" },
-  { name: "JN" },
   { name: "LOFTORY", logo: "/logos/loftory.webp" },
   { name: "GetUp", logo: "/logos/getup.jpg" },
   { name: "АСАН", logo: "/logos/asan.png" },
@@ -537,6 +536,73 @@ export const partners: Partner[] = [
   { name: "Grant China", logo: "/logos/grantchina.png" },
   { name: "iram.cinema", logo: "/logos/iram-cinema.png" },
   { name: "Javonon Group", logo: "/logos/javonon-group.png" },
+]
+
+export type Vacancy = {
+  id: string
+  title: string
+  tagline: string
+  type: string
+  tags: string[]
+  icon: string // lucide-react icon name, mapped in Careers.tsx
+  accent: string // brand-scale token used for the role icon tint
+}
+
+export const vacancies: Vacancy[] = [
+  {
+    id: "designer",
+    title: "Дизайнер",
+    tagline: "Создаёшь визуал брендов: от логотипа и айдентики до интерфейсов сайтов и приложений.",
+    type: "Полная занятость · Душанбе",
+    tags: ["Графдизайн", "UI/UX", "Figma"],
+    icon: "Palette",
+    accent: "brand-600",
+  },
+  {
+    id: "smm",
+    title: "SMM-специалист",
+    tagline: "Ведёшь соцсети клиентов: контент-план, тексты, съёмки и вовлечение аудитории.",
+    type: "Полная занятость · Гибрид",
+    tags: ["Instagram", "Контент", "Stories"],
+    icon: "Megaphone",
+    accent: "brand-500",
+  },
+  {
+    id: "sales",
+    title: "Менеджер по продажам",
+    tagline: "Общаешься с клиентами, ведёшь сделки и помогаешь бизнесу выбрать решение.",
+    type: "Полная занятость · Офис",
+    tags: ["Переговоры", "CRM", "B2B"],
+    icon: "Handshake",
+    accent: "brand-700",
+  },
+  {
+    id: "frontend",
+    title: "Frontend-разработчик",
+    tagline: "Верстаешь и оживляешь современные адаптивные сайты на React и Tailwind.",
+    type: "Полная занятость · Удалённо",
+    tags: ["React", "TypeScript", "Tailwind"],
+    icon: "Code2",
+    accent: "brand-600",
+  },
+  {
+    id: "targetolog",
+    title: "Таргетолог",
+    tagline: "Настраиваешь рекламу в Instagram и Facebook и приносишь клиентам заявки, а не сливы бюджета.",
+    type: "Проектная занятость · Удалённо",
+    tags: ["Meta Ads", "Аналитика", "Бюджеты"],
+    icon: "Target",
+    accent: "brand-500",
+  },
+  {
+    id: "content",
+    title: "Контент-мейкер",
+    tagline: "Снимаешь и монтируешь Reels и ролики, которые набирают охваты и продают.",
+    type: "Гибкий график · Душанбе",
+    tags: ["Reels", "Съёмка", "Монтаж"],
+    icon: "Clapperboard",
+    accent: "brand-700",
+  },
 ]
 
 export const contacts = {

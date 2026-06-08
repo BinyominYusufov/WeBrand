@@ -47,3 +47,5 @@ Thumbs.db
 *.tsbuildinfo
 
 .vercel
+.agents
+.shots

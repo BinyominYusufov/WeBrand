@@ -9,17 +9,17 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-24 lg:py-32 bg-gradient-to-b from-white via-brand-50/30 to-white overflow-hidden"
+      className="relative py-14 md:py-24 lg:py-32 bg-gradient-to-b from-white via-brand-50/30 to-white overflow-hidden"
     >
       <div className="absolute top-20 -right-40 w-[30rem] h-[30rem] bg-brand-600/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-16 flex-wrap gap-6"
+          className="flex items-end justify-between mb-10 md:mb-16 flex-wrap gap-6"
         >
           <div>
             <span className="text-sm font-bold text-brand-600 uppercase tracking-[0.2em]">
@@ -53,7 +53,7 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-16 flex flex-col items-center"
+          className="mt-10 md:mt-16 flex flex-col items-center"
         >
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}

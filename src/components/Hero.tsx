@@ -18,7 +18,7 @@ export default function Hero() {
     <section
       id="top"
       ref={ref}
-      className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-24 pb-14 md:pt-32 md:pb-20 overflow-hidden"
     >
       {/* Background mesh */}
       <div className="absolute inset-0 -z-10">
@@ -59,13 +59,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 text-center text-lg lg:text-xl text-neutral-600 max-w-2xl mx-auto text-balance leading-relaxed"
+          className="mt-6 md:mt-10 text-center text-lg lg:text-xl text-neutral-600 max-w-2xl mx-auto text-balance leading-relaxed"
         >
           Разрабатываем сайты, выстраиваем бренд, привлекаем клиентов через SMM и контекстную рекламу. Комплексные решения, которые приносят прибыль.
         </motion.p>
 
         {/* Floating tags */}
-        <div className="relative mt-14">
+        <div className="relative mt-8 md:mt-14">
           <div className="flex flex-wrap justify-center gap-3">
             {heroTags.map((tag, i) => (
               <motion.div
@@ -92,7 +92,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}

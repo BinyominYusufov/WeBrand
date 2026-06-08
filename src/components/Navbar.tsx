@@ -77,16 +77,14 @@ export default function Navbar() {
       initial={reduce ? false : { y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300 ease-out ${
-        scrolled
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300 ease-out ${scrolled
           ? 'border-b border-black/[0.06] bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_-14px_rgba(16,24,40,0.18),inset_0_-1px_0_rgba(255,255,255,0.6)]'
           : 'border-b border-transparent bg-transparent'
-      }`}
+        }`}
     >
       <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-300 ease-out lg:px-10 ${
-          scrolled ? 'h-16' : 'h-20'
-        }`}
+        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-300 ease-out lg:px-10 ${scrolled ? 'h-16' : 'h-20'
+          }`}
       >
         {/* Logo */}
         <a href="#top" className="relative z-50 flex select-none items-center" aria-label="Webrand — на главную">
@@ -95,9 +93,8 @@ export default function Navbar() {
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             src="/logos/main-logo.png"
             alt="Webrand"
-            className={`w-auto object-contain transition-[height] duration-300 ${
-              scrolled ? 'h-8' : 'h-9 sm:h-10'
-            }`}
+            className={`w-auto object-contain transition-[height] duration-300 ${scrolled ? 'h-8' : 'h-9 sm:h-10'
+              }`}
           />
         </a>
 
@@ -110,15 +107,13 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? 'true' : undefined}
-                className={`group relative text-sm font-semibold transition-colors duration-200 ${
-                  active ? 'text-brand-600' : 'text-neutral-700 hover:text-brand-600'
-                }`}
+                className={`group relative text-sm font-semibold transition-colors duration-200 ${active ? 'text-brand-600' : 'text-neutral-700 hover:text-brand-600'
+                  }`}
               >
                 {item.label}
                 <span
-                  className={`absolute -bottom-1.5 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ease-out ${
-                    active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                  }`}
+                  className={`absolute -bottom-1.5 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ease-out ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                    }`}
                 />
               </a>
             )
@@ -157,16 +152,25 @@ export default function Navbar() {
           className="relative z-50 grid h-10 w-10 place-items-center lg:hidden"
         >
           <span className="relative block h-6 w-6">
+            {/* верхняя полоска */}
             <motion.span
               className="absolute left-0 block h-0.5 w-6 rounded-full bg-neutral-900"
               style={{ top: 'calc(50% - 1px)', transformOrigin: 'center' }}
-              animate={open ? { rotate: 45, y: 0 } : { rotate: 0, y: -4 }}
+              animate={open ? { rotate: 45, y: 0 } : { rotate: 0, y: -6 }}
               transition={{ duration: reduce ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
             />
+            {/* средняя полоска — исчезает при открытии */}
             <motion.span
               className="absolute left-0 block h-0.5 w-6 rounded-full bg-neutral-900"
               style={{ top: 'calc(50% - 1px)', transformOrigin: 'center' }}
-              animate={open ? { rotate: -45, y: 0 } : { rotate: 0, y: 4 }}
+              animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+              transition={{ duration: reduce ? 0 : 0.2, ease: 'easeOut' }}
+            />
+            {/* нижняя полоска */}
+            <motion.span
+              className="absolute left-0 block h-0.5 w-6 rounded-full bg-neutral-900"
+              style={{ top: 'calc(50% - 1px)', transformOrigin: 'center' }}
+              animate={open ? { rotate: -45, y: 0 } : { rotate: 0, y: 6 }}
               transition={{ duration: reduce ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
             />
           </span>
@@ -198,9 +202,8 @@ export default function Navbar() {
                     variants={itemVariants}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className={`text-4xl font-extrabold tracking-tight transition-colors ${
-                      active ? 'text-brand-600' : 'text-neutral-900'
-                    }`}
+                    className={`text-4xl font-extrabold tracking-tight transition-colors ${active ? 'text-brand-600' : 'text-neutral-900'
+                      }`}
                   >
                     {item.label}
                   </motion.a>

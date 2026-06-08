@@ -6,9 +6,9 @@ import { useModal } from '../context/ModalContext'
 export default function Footer() {
   const { open: openModal } = useModal()
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200 pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-neutral-200">
+    <footer className="bg-neutral-50 border-t border-neutral-200 pt-12 pb-8 md:pt-20 md:pb-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-10 mb-10 pb-10 md:gap-12 md:mb-16 md:pb-16 border-b border-neutral-200">
           <div>
             <a href="#top" className="inline-flex items-center group">
               <motion.img
@@ -38,7 +38,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col items-start lg:items-end gap-8">
+          <div className="flex flex-col items-start lg:items-end gap-6 md:gap-8">
             <nav className="flex flex-wrap gap-x-8 gap-y-3">
               {nav.map((item) => (
                 <a

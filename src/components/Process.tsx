@@ -25,19 +25,19 @@ const steps = [
 
 export default function Process() {
   return (
-    <section className="relative py-24 lg:py-32 bg-neutral-950 text-white overflow-hidden">
+    <section className="relative py-14 md:py-24 lg:py-32 bg-neutral-950 text-white overflow-hidden">
       {/* BG */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:64px_64px]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-[40rem] bg-brand-600/25 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-brand-500/10 rounded-full blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center mb-12 md:mb-20"
         >
           <span className="text-sm font-bold text-brand-400 uppercase tracking-[0.2em]">
             — Процесс
