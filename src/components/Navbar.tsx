@@ -159,7 +159,7 @@ export default function Navbar() {
             whileHover={reduce ? undefined : { scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 18 }}
-            onClick={openModal}
+            onClick={() => openModal()}
             className="group ml-1 inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition-shadow duration-300 hover:shadow-xl hover:shadow-brand-600/40"
           >
             Напишите нам

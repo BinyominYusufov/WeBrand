@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, ChevronRight } from 'lucide-react'
 import { services, contacts, type Service, type SubService } from '../data/content'
 import { useModal } from '../context/ModalContext'
+import { directionsForService } from './ContactForm'
 
 export default function Services() {
   const { open: openModal, openServiceDetail } = useModal()
@@ -41,7 +42,7 @@ export default function Services() {
               key={service.id}
               service={service}
               index={i}
-              onOrder={openModal}
+              onOrder={() => openModal(directionsForService(service.title))}
               onSubClick={(sub) =>
                 openServiceDetail({ parent: service.title, sub })
               }

@@ -9,8 +9,10 @@ export type ServiceDetailPayload = {
 type ModalContextType = {
   // Contact modal
   isOpen: boolean
-  open: () => void
+  open: (preselect?: string[]) => void
   close: () => void
+  /** Direction ids to pre-select in the contact form (e.g. ["dev"]). */
+  contactPreselect: string[]
 
   // Service detail modal
   serviceDetail: ServiceDetailPayload | null
@@ -22,9 +24,15 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [contactPreselect, setContactPreselect] = useState<string[]>([])
   const [serviceDetail, setServiceDetail] = useState<ServiceDetailPayload | null>(null)
 
-  const open = useCallback(() => setIsOpen(true), [])
+  const open = useCallback((preselect?: string[]) => {
+    // Guard: callers often pass `open` straight to onClick, which would hand us
+    // a MouseEvent — only honour an actual array of direction ids.
+    setContactPreselect(Array.isArray(preselect) ? preselect : [])
+    setIsOpen(true)
+  }, [])
   const close = useCallback(() => setIsOpen(false), [])
 
   const openServiceDetail = useCallback((payload: ServiceDetailPayload) => {
@@ -34,7 +42,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   return (
     <ModalContext.Provider
-      value={{ isOpen, open, close, serviceDetail, openServiceDetail, closeServiceDetail }}
+      value={{ isOpen, open, close, contactPreselect, serviceDetail, openServiceDetail, closeServiceDetail }}
     >
       {children}
     </ModalContext.Provider>

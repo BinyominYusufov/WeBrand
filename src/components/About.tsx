@@ -57,7 +57,7 @@ export default function About() {
               transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              onClick={openModal}
+              onClick={() => openModal()}
               className="mt-8 md:mt-10 inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-neutral-900 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               Обсудить проект

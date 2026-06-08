@@ -98,7 +98,7 @@ export default function Hero() {
           <motion.button
             whileHover={reduce ? undefined : { scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.97 }}
-            onClick={openModal}
+            onClick={() => openModal()}
             className="group px-8 py-4 rounded-full bg-neutral-900 text-white font-semibold shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-3"
           >
             Связаться с нами

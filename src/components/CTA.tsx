@@ -76,7 +76,7 @@ export default function CTA() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={openModal}
+                onClick={() => openModal()}
                 className="group flex items-center justify-between p-5 rounded-2xl bg-white text-neutral-900 shadow-xl text-left"
               >
                 <div className="flex items-center gap-4">

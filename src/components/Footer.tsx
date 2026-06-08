@@ -54,7 +54,7 @@ export default function Footer() {
             <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              onClick={openModal}
+              onClick={() => openModal()}
               className="px-8 py-4 rounded-full bg-neutral-900 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               Напишите нам

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Check, Clock, Sparkles, Target, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { useModal } from '../context/ModalContext'
+import { directionsForService } from './ContactForm'
 
 export default function ServiceDetailModal() {
   const { serviceDetail, closeServiceDetail, open: openContact } = useModal()
@@ -55,8 +56,9 @@ export default function ServiceDetailModal() {
   }
 
   const handleOrder = () => {
+    const preselect = serviceDetail ? directionsForService(serviceDetail.parent) : []
     closeServiceDetail()
-    setTimeout(() => openContact(), 200)
+    setTimeout(() => openContact(preselect), 200)
   }
 
   return (
