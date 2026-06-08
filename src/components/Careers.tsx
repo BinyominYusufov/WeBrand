@@ -37,10 +37,11 @@ export default function Careers() {
   const { open } = useModal()
 
   return (
-    // scroll-mt-28 keeps the heading clear of the fixed navbar when navigating to #careers
+    // scroll-mt-28 keeps the heading clear of the fixed navbar when navigating to #careers.
+    // Extra top padding on mobile so the heading is clearly separated from the fixed header.
     <section
       id="careers"
-      className="relative scroll-mt-28 bg-white py-14 md:py-24 lg:py-32"
+      className="relative scroll-mt-28 bg-white pt-28 pb-14 md:pt-24 md:pb-24 lg:pt-32 lg:pb-32"
     >
       <div className="relative mx-auto max-w-7xl px-5 md:px-6 lg:px-10">
         {/* Header */}

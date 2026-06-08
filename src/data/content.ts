@@ -2,7 +2,7 @@ export const nav = [
   { label: "О компании", href: "#about" },
   { label: "Услуги", href: "#services" },
   { label: "Портфолио", href: "#portfolio" },
-  { label: "Вакансии", href: "#careers" },
+  { label: "Вакансии", href: "/vacancies" },
 ]
 
 export const heroTags = [

@@ -13,7 +13,6 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   })
   const y = useTransform(scrollYProgress, [0, 1], [0, 150])
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
   return (
     <section
@@ -36,10 +35,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
       </div>
 
-      <motion.div
-        style={{ opacity }}
-        className="max-w-7xl mx-auto px-6 lg:px-10 w-full"
-      >
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 w-full">
         {/* Headline */}
         <motion.h1
           initial={reduce ? false : { opacity: 0, y: 30 }}
@@ -99,10 +95,10 @@ export default function Hero() {
             whileHover={reduce ? undefined : { scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => openModal()}
-            className="group px-8 py-4 rounded-full bg-neutral-900 text-white font-semibold shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-3"
+            className="group px-8 py-4 rounded-full bg-brand-600 hover:bg-brand-700 active:bg-brand-700 text-white font-semibold shadow-lg shadow-brand-600/30 hover:shadow-xl hover:shadow-brand-600/40 transition-all flex items-center gap-3"
           >
             Связаться с нами
-            <span className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center group-hover:rotate-45 transition-transform">
+            <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-45 transition-transform">
               <ArrowRight className="w-4 h-4 -rotate-45 group-hover:rotate-0 transition-transform" />
             </span>
           </motion.button>
@@ -149,7 +145,7 @@ export default function Hero() {
             <Zap className="w-6 h-6 text-brand-400" />
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

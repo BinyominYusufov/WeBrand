@@ -7,6 +7,7 @@ import {
   PhoneCall, ShoppingBag, MousePointerClick, Radio,
   type LucideIcon,
 } from "lucide-react";
+import { contacts } from "../data/content";
 
 type Direction = { id: string; label: string; sub: string; icon: LucideIcon; wide?: boolean };
 type QOption = { l: string; icon: LucideIcon };
@@ -77,6 +78,49 @@ const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID as string;
 const esc = (s: string): string =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const dirLabel = (id: string): string => DIRECTIONS.find((d) => d.id === id)?.label ?? id;
+
+// === Валидация контактов ===
+const PHONE_PREFIX = "+992 ";
+const NAME_RE = /^[\p{L}][\p{L}\s'’-]*$/u; // буквы (любой алфавит), пробел, апостроф, дефис
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const TG_RE = /^@?[A-Za-z0-9_]{5,32}$/;
+
+// 9 национальных цифр после фиксированного префикса "+992 "
+const nationalDigits = (v: string): string => {
+  let d = v.replace(/\D/g, "");
+  if (d.startsWith("992")) d = d.slice(3);
+  return d.slice(0, 9);
+};
+// Группировка 9 цифр: "98 864 55 43"
+const formatPhone = (d: string): string => {
+  let out = d.slice(0, 2);
+  if (d.length > 2) out += " " + d.slice(2, 5);
+  if (d.length > 5) out += " " + d.slice(5, 7);
+  if (d.length > 7) out += " " + d.slice(7, 9);
+  return out;
+};
+
+function validateName(v: string): string | undefined {
+  const t = v.trim();
+  if (!t) return "Введите имя";
+  if (t.length < 2) return "Минимум 2 символа";
+  if (t.length > 50) return "Максимум 50 символов";
+  if (!NAME_RE.test(t)) return "Только буквы, пробел и дефис";
+  return undefined;
+}
+function validateContact(v: string): string | undefined {
+  const t = v.trim();
+  if (!t) return "Укажите email или Telegram";
+  if (!EMAIL_RE.test(t) && !TG_RE.test(t)) return "Введите email или Telegram (@username)";
+  return undefined;
+}
+function validatePhone(v: string): string | undefined {
+  if (nationalDigits(v).length !== 9) return "Введите 9 цифр номера";
+  return undefined;
+}
+
+type ContactErrors = { name?: string; contact?: string; phone?: string };
+type ContactTouched = { name?: boolean; contact?: boolean; phone?: boolean };
 
 type LeadPayload = { selected: string[]; answers: Answers; name: string; contact: string; phone: string };
 
@@ -192,6 +236,28 @@ const CSS = `
   background:var(--brand); color:#fff; display:flex;align-items:center;justify-content:center;
   opacity:0; transform:scale(.4); transition: opacity .2s ease, transform .3s var(--spring); }
 .cqf .field.done .tick { opacity:1; transform:scale(1); }
+
+.cqf .field.error { border-color:#E5484D; box-shadow:0 0 0 4px rgba(229,72,77,.1); }
+.cqf a.cqf-tglink { transition: opacity .2s ease; }
+.cqf a.cqf-tglink:hover { opacity:.82; text-decoration:underline !important; }
+
+/* === Мобильный адаптив (≤640px). !important — чтобы перебить инлайн-стили карточки. === */
+@media (max-width:640px) {
+  /* Левая синяя панель не нужна на телефоне */
+  .cqf .cqf-side { display:none !important; }
+  /* Форма занимает всю ширину, отступы компактнее — без тесноты и гориз. скролла */
+  .cqf .cqf-body { padding:22px 16px 20px !important; }
+  /* Заголовок-строка: правый отступ под кнопку-крестик модалки, чтобы «Шаг X из Y» не перекрывался */
+  .cqf .cqf-head { padding-right:40px !important; }
+  /* Карточки направлений — в один столбец на всю ширину */
+  .cqf .dircard { width:100% !important; padding:15px 16px !important; }
+  /* Крупные тап-таргеты */
+  .cqf .opt { padding:15px 16px !important; }
+  .cqf .field { padding-top:12px !important; padding-bottom:12px !important; }
+  .cqf .field input { font-size:16px !important; } /* ≥16px — iOS не зумит при фокусе */
+  .cqf .btn-primary,
+  .cqf .btn-ghost { padding:16px 16px !important; font-size:16px !important; }
+}
 `;
 
 export default function ContactForm({ initialSelected = [] }: { initialSelected?: string[] }) {
@@ -200,7 +266,8 @@ export default function ContactForm({ initialSelected = [] }: { initialSelected?
   const [screen, setScreen] = useState(0);
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [phone, setPhone] = useState("+992 ");
+  const [phone, setPhone] = useState(PHONE_PREFIX);
+  const [touched, setTouched] = useState<ContactTouched>({});
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(false);
@@ -226,14 +293,30 @@ export default function ContactForm({ initialSelected = [] }: { initialSelected?
       return { ...prev, [dir]: opt };
     });
 
-  const filled = (name.trim() ? 1 : 0) + (contact.trim() ? 1 : 0) + (phone.trim().length > 5 ? 1 : 0);
+  // Keep the fixed "+992 " prefix, accept only digits, cap at 9, auto-format
+  const onPhoneChange = (v: string) => setPhone(PHONE_PREFIX + formatPhone(nationalDigits(v)));
+  const blur = (k: keyof ContactTouched) => setTouched((t) => ({ ...t, [k]: true }));
+
+  const errName = validateName(name);
+  const errContact = validateContact(contact);
+  const errPhone = validatePhone(phone);
+  const errors: ContactErrors = {
+    name: touched.name ? errName : undefined,
+    contact: touched.contact ? errContact : undefined,
+    phone: touched.phone ? errPhone : undefined,
+  };
+
+  const filled = (errName ? 0 : 1) + (errContact ? 0 : 1) + (errPhone ? 0 : 1);
   const progress = onContacts
     ? Math.round(((screen + filled / 3) / totalSteps) * 100)
     : Math.round((screen / totalSteps) * 100) + (selected.length ? 8 : 0);
-  const canSubmit = filled === 3;
+  const canSubmit = !errName && !errContact && !errPhone;
 
   const handleSubmit = async () => {
-    if (!canSubmit || sending) return;
+    if (!canSubmit || sending) {
+      setTouched({ name: true, contact: true, phone: true });
+      return;
+    }
     setError(false);
     const text = buildLeadMessage({ selected, answers, name, contact, phone });
     if (!TOKEN || !CHAT_ID) { setSubmitted(true); return; } // не настроено — показать успех
@@ -274,7 +357,7 @@ export default function ContactForm({ initialSelected = [] }: { initialSelected?
       overflow: "hidden", boxShadow: "0 30px 80px rgba(43,94,211,0.18)", background: "#fff" }}>
       <style>{CSS}</style>
 
-        <div className="hidden sm:flex" style={{ width: "40%",
+        <div className="hidden sm:flex cqf-side" style={{ width: "40%",
           background: "linear-gradient(160deg, #2B5ED3 0%, #1E47A8 100%)", color: "#fff",
           padding: "36px 30px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
@@ -294,17 +377,20 @@ export default function ContactForm({ initialSelected = [] }: { initialSelected?
             <Trust icon={ShieldCheck} title="30+ компаний доверяют" sub="медицина, e-commerce, услуги" />
           </div>
           <div style={{ fontSize: 14, lineHeight: 2 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Send size={15} /> Написать в Telegram</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Phone size={15} /> +992 988 64 55 43</div>
+            <a href={contacts.telegram} target="_blank" rel="noopener noreferrer" className="cqf-tglink"
+              style={{ display: "flex", alignItems: "center", gap: 8, color: "#fff", textDecoration: "none" }}>
+              <Send size={15} /> Написать в Telegram
+            </a>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Phone size={15} /> {contacts.phone}</div>
           </div>
         </div>
 
-        <div style={{ flex: 1, padding: "34px 34px 26px", minWidth: 0 }}>
+        <div className="cqf-body" style={{ flex: 1, padding: "34px 34px 26px", minWidth: 0 }}>
           {submitted ? (
             <SuccessView selected={selected} unsure={unsureOnly} />
           ) : (
             <>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12 }}>
+              <div className="cqf-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12 }}>
                 <h3 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>{heading}</h3>
                 <span style={{ fontSize: 13, color: "#9AA0AA", whiteSpace: "nowrap" }}>
                   Шаг {screen + 1} из {totalSteps}
@@ -327,8 +413,8 @@ export default function ContactForm({ initialSelected = [] }: { initialSelected?
               )}
               {onContacts && (
                 <StepContacts key="contacts" name={name} setName={setName} contact={contact}
-                  setContact={setContact} phone={phone} setPhone={setPhone} canSubmit={canSubmit}
-                  sending={sending} error={error}
+                  setContact={setContact} phone={phone} setPhone={onPhoneChange} canSubmit={canSubmit}
+                  sending={sending} error={error} errors={errors} onBlur={blur}
                   onBack={() => setScreen(screen - 1)} onSubmit={handleSubmit} />
               )}
             </>
@@ -426,27 +512,32 @@ function StepQuestion({ dir, value, setAnswer, onBack, onNext }: {
   );
 }
 
-function StepContacts({ name, setName, contact, setContact, phone, setPhone, canSubmit, sending, error, onBack, onSubmit }: {
+function StepContacts({ name, setName, contact, setContact, phone, setPhone, canSubmit, sending, error, errors, onBlur, onBack, onSubmit }: {
   name: string; setName: (v: string) => void;
   contact: string; setContact: (v: string) => void;
   phone: string; setPhone: (v: string) => void;
   canSubmit: boolean; sending: boolean; error: boolean;
+  errors: ContactErrors; onBlur: (k: "name" | "contact" | "phone") => void;
   onBack: () => void; onSubmit: () => void;
 }) {
   return (
     <div>
       <div className="up" style={{ animationDelay: "0ms" }}>
-        <Field icon={User} label="Имя" value={name} onChange={setName}
-          placeholder="Как к вам обращаться" done={name.trim().length > 0} />
+        <Field icon={User} label="Имя" value={name} onChange={setName} maxLength={50}
+          placeholder="Как к вам обращаться" done={name.trim().length > 0}
+          error={errors.name} onBlur={() => onBlur("name")} />
       </div>
       <div className="up" style={{ animationDelay: "90ms" }}>
-        <Field icon={AtSign} label="Telegram или email" value={contact} onChange={setContact}
-          placeholder="@username или email" done={contact.trim().length > 0} />
+        <Field icon={AtSign} label="Telegram или email" value={contact} onChange={setContact} maxLength={60}
+          placeholder="@username или email" done={contact.trim().length > 0}
+          error={errors.contact} onBlur={() => onBlur("contact")} />
       </div>
       <div className="up" style={{ animationDelay: "180ms" }}>
         <Field icon={Phone} label="Телефон" value={phone} onChange={setPhone} placeholder="+992 ..."
+          inputMode="tel" maxLength={17}
           hint="Нужен, чтобы связаться, если в мессенджере не ответите. Без спам-звонков."
-          done={phone.trim().length > 5} />
+          done={validatePhone(phone) === undefined}
+          error={errors.phone} onBlur={() => onBlur("phone")} />
       </div>
       {error && (
         <p style={{ fontSize: 13, color: "#D14545", margin: "2px 2px 0", lineHeight: 1.4 }}>
@@ -484,7 +575,7 @@ function NavButtons({ onBack, onNext, nextLabel, nextIcon: NextIcon = ArrowRight
   );
 }
 
-function Field({ icon: Icon, label, value, onChange, placeholder, hint, done }: {
+function Field({ icon: Icon, label, value, onChange, placeholder, hint, done, error, onBlur, maxLength, inputMode }: {
   icon: LucideIcon;
   label: string;
   value: string;
@@ -492,22 +583,32 @@ function Field({ icon: Icon, label, value, onChange, placeholder, hint, done }: 
   placeholder?: string;
   hint?: string;
   done: boolean;
+  error?: string;
+  onBlur?: () => void;
+  maxLength?: number;
+  inputMode?: "text" | "email" | "tel";
 }) {
   const [focus, setFocus] = useState(false);
+  const accent = error ? "#E5484D" : focus || done ? "#2B5ED3" : "#9AA0AA";
   return (
     <div style={{ marginBottom: 14 }}>
-      <div className={`field ${focus ? "focus" : ""} ${done ? "done" : ""}`}>
-        <Icon size={18} color={focus || done ? "#2B5ED3" : "#9AA0AA"}
+      <div className={`field ${focus ? "focus" : ""} ${done && !error ? "done" : ""} ${error ? "error" : ""}`}>
+        <Icon size={18} color={accent}
           style={{ position: "absolute", left: 14, top: 16, transition: "color .25s ease" }} />
-        <label style={{ display: "block", fontSize: 11.5, color: focus ? "#2B5ED3" : "#9AA0AA",
+        <label style={{ display: "block", fontSize: 11.5, color: error ? "#E5484D" : focus ? "#2B5ED3" : "#9AA0AA",
           fontWeight: 500, transition: "color .25s ease" }}>
           {label} <span style={{ color: "#2B5ED3" }}>*</span>
         </label>
-        <input value={value} onChange={(e) => onChange(e.target.value)} onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)} placeholder={placeholder} />
+        <input value={value} maxLength={maxLength} inputMode={inputMode} aria-invalid={!!error}
+          onChange={(e) => onChange(e.target.value)} onFocus={() => setFocus(true)}
+          onBlur={() => { setFocus(false); onBlur?.(); }} placeholder={placeholder} />
         <span className="tick"><Check size={13} strokeWidth={3} /></span>
       </div>
-      {hint && <p style={{ fontSize: 12, color: "#9AA0AA", margin: "5px 4px 0", lineHeight: 1.4 }}>{hint}</p>}
+      {error ? (
+        <p role="alert" style={{ fontSize: 12, color: "#E5484D", margin: "5px 4px 0", lineHeight: 1.4 }}>{error}</p>
+      ) : hint ? (
+        <p style={{ fontSize: 12, color: "#9AA0AA", margin: "5px 4px 0", lineHeight: 1.4 }}>{hint}</p>
+      ) : null}
     </div>
   );
 }

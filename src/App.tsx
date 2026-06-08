@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -25,8 +26,27 @@ function Home() {
         <Process />
         <Portfolio />
         <Partners />
-        <Careers />
         <CTA />
+      </main>
+      <Footer />
+      <ContactModal />
+      <ServiceDetailModal />
+    </div>
+  )
+}
+
+function Vacancies() {
+  // Dedicated route for the careers section — reuses the existing Careers
+  // component + content.ts data. Land at the top, not at a preserved scroll.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  return (
+    <div className="relative min-h-screen bg-white">
+      <Navbar />
+      <main>
+        <Careers />
       </main>
       <Footer />
       <ContactModal />
@@ -43,6 +63,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/devprojects" element={<Home />} />
           <Route path="/smmprojects" element={<Home />} />
+          <Route path="/vacancies" element={<Vacancies />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ModalProvider>

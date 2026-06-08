@@ -1,16 +1,23 @@
 import { motion } from 'framer-motion'
 import { Instagram, Send, ArrowUp } from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom'
 import { contacts, nav } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
 export default function Footer() {
   const { open: openModal } = useModal()
+  const location = useLocation()
+
+  // On non-home routes, prefix hash links with "/" so they navigate home first.
+  const resolveHash = (href: string) =>
+    location.pathname === '/' ? href : '/' + href
+
   return (
     <footer className="bg-neutral-50 border-t border-neutral-200 pt-12 pb-8 md:pt-20 md:pb-10">
       <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-10 mb-10 pb-10 md:gap-12 md:mb-16 md:pb-16 border-b border-neutral-200">
           <div>
-            <a href="#top" className="inline-flex items-center group">
+            <a href={resolveHash('#top')} className="inline-flex items-center group">
               <motion.img
                 whileHover={{ scale: 1.05 }}
                 src="/logos/main-logo.png"
@@ -40,15 +47,19 @@ export default function Footer() {
 
           <div className="flex flex-col items-start lg:items-end gap-6 md:gap-8">
             <nav className="flex flex-wrap gap-x-8 gap-y-3">
-              {nav.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="text-neutral-700 hover:text-brand-600 transition-colors font-semibold"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {nav.map((item) => {
+                const className =
+                  'text-neutral-700 hover:text-brand-600 transition-colors font-semibold'
+                return item.href.startsWith('/') ? (
+                  <Link key={item.href} to={item.href} className={className}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a key={item.href} href={resolveHash(item.href)} className={className}>
+                    {item.label}
+                  </a>
+                )
+              })}
             </nav>
 
             <motion.button
@@ -89,7 +100,7 @@ export default function Footer() {
             <p>Создано с любовью в Душанбе.</p>
             <motion.a
               whileHover={{ y: -3 }}
-              href="#top"
+              href={resolveHash('#top')}
               className="w-10 h-10 rounded-full bg-white border border-neutral-200 hover:border-brand-600 hover:text-brand-600 flex items-center justify-center transition-colors"
               aria-label="Наверх"
             >

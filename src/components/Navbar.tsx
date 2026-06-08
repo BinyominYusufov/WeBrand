@@ -7,6 +7,7 @@ import {
   useReducedMotion,
 } from 'framer-motion'
 import { Phone, ArrowRight } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { nav, contacts } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
@@ -17,6 +18,14 @@ export default function Navbar() {
   const { open: openModal } = useModal()
   const reduce = useReducedMotion()
   const menuRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // Hash links scroll within the home page; when we're on another route
+  // (e.g. /vacancies) prefix them with "/" so the browser navigates home and
+  // then jumps to the section.
+  const resolveHash = (href: string) =>
+    location.pathname === '/' ? href : '/' + href
 
   // Scroll state via Framer's motion value (no per-frame window scroll listener)
   const { scrollY } = useScroll()
@@ -97,10 +106,11 @@ export default function Navbar() {
   }
 
   return (
-    <motion.header
-      initial={reduce ? false : { y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    <>
+      <motion.header
+        initial={reduce ? false : { y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300 ease-out ${scrolled
           ? 'border-b border-black/[0.06] bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_-14px_rgba(16,24,40,0.18),inset_0_-1px_0_rgba(255,255,255,0.6)]'
           : 'border-b border-transparent bg-transparent'
@@ -111,7 +121,7 @@ export default function Navbar() {
           }`}
       >
         {/* Logo */}
-        <a href="#top" className="relative z-50 flex select-none items-center" aria-label="Webrand — на главную">
+        <a href={resolveHash('#top')} className="relative z-50 flex select-none items-center" aria-label="Webrand — на главную">
           <motion.img
             whileHover={reduce ? undefined : { scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
@@ -125,20 +135,27 @@ export default function Navbar() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-9 lg:flex">
           {nav.map((item) => {
-            const active = activeId === item.href.slice(1)
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                aria-current={active ? 'true' : undefined}
-                className={`group relative text-sm font-semibold transition-colors duration-200 ${active ? 'text-brand-600' : 'text-neutral-700 hover:text-brand-600'
+            const isRoute = item.href.startsWith('/')
+            const active = isRoute
+              ? location.pathname === item.href
+              : activeId === item.href.slice(1)
+            const className = `group relative text-sm font-semibold transition-colors duration-200 ${active ? 'text-brand-600' : 'text-neutral-700 hover:text-brand-600'
+              }`
+            const underline = (
+              <span
+                className={`absolute -bottom-1.5 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ease-out ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                   }`}
-              >
+              />
+            )
+            return isRoute ? (
+              <Link key={item.href} to={item.href} aria-current={active ? 'true' : undefined} className={className}>
                 {item.label}
-                <span
-                  className={`absolute -bottom-1.5 left-0 h-0.5 w-full origin-left rounded-full bg-brand-600 transition-transform duration-300 ease-out ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                    }`}
-                />
+                {underline}
+              </Link>
+            ) : (
+              <a key={item.href} href={resolveHash(item.href)} aria-current={active ? 'true' : undefined} className={className}>
+                {item.label}
+                {underline}
               </a>
             )
           })}
@@ -199,9 +216,14 @@ export default function Navbar() {
             />
           </span>
         </button>
-      </div>
+        </div>
+      </motion.header>
 
-      {/* Mobile full-screen menu */}
+      {/* Mobile full-screen menu — rendered as a sibling of the header (NOT a
+          child) so its `fixed inset-0` resolves against the viewport rather than
+          the header's transformed box. The header (z-50) stays above this overlay
+          (z-40), so it remains fully visible and the close button stays tappable
+          even after the page has been scrolled. */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -220,13 +242,22 @@ export default function Navbar() {
               className="flex h-full flex-col justify-center gap-3 px-8"
             >
               {nav.map((item) => {
-                const active = activeId === item.href.slice(1)
+                const isRoute = item.href.startsWith('/')
+                const active = isRoute
+                  ? location.pathname === item.href
+                  : activeId === item.href.slice(1)
                 return (
                   <motion.a
                     key={item.href}
                     variants={itemVariants}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
+                    href={isRoute ? item.href : resolveHash(item.href)}
+                    onClick={(e) => {
+                      setOpen(false)
+                      if (isRoute) {
+                        e.preventDefault()
+                        navigate(item.href)
+                      }
+                    }}
                     className={`text-4xl font-extrabold tracking-tight transition-colors ${active ? 'text-brand-600' : 'text-neutral-900'
                       }`}
                   >
@@ -262,6 +293,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   )
 }
