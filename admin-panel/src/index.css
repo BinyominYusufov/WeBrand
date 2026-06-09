@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-neutral-50 font-sans text-neutral-900;
+  }
+  /* Restrained focus ring across the app */
+  :focus-visible {
+    outline: none;
+    @apply ring-2 ring-brand-500/60 ring-offset-1 ring-offset-white;
+  }
+}
+
+@layer utilities {
+  /* Thin, subtle scrollbars in scroll areas */
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225) transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-neutral-300;
+  }
+}

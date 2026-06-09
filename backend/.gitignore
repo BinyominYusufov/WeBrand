@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Database
+*.sqlite3
+
+# Uploaded media (use object storage in prod — see TЗ §9/§11)
+media/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django
+staticfiles/
+
+# OS / editor
+.DS_Store
