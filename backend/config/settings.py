@@ -68,10 +68,11 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # --- Database ---------------------------------------------------------------
-# SQLite locally; set DATABASE_URL (e.g. postgres://...) in prod.
+# SQLite locally; set DATABASE_URL (e.g. postgres://...) in prod. An empty
+# DATABASE_URL (as in .env.example) counts as unset and falls back to SQLite.
 DATABASES = {
     "default": dj_database_url.parse(
-        config("DATABASE_URL", default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        config("DATABASE_URL", default="") or f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
     )
 }
@@ -93,15 +94,72 @@ USE_TZ = True
 # --- Static & media ---------------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    },
-}
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Object storage (S3-compatible) for uploaded media. Switches on only when the
+# credentials are provided via env; otherwise (local dev) media stays on the
+# local filesystem and nothing changes. Two media storages on purpose:
+#   default  — public site assets (project logos): plain, cacheable URLs.
+#   resumes  — applicant CVs (PII): never given a public URL. Even .url is
+#              querystring-signed, and the only sanctioned access path is the
+#              streaming endpoint LeadResumeView (signed token, staff-minted).
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default="")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default="")
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default="")
+AWS_S3_ENDPOINT_URL = config("AWS_S3_ENDPOINT_URL", default="")
+AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="")
+# Optional: public domain for the bucket (e.g. an R2 public/custom domain or a
+# CDN). Applied to public media only — logo URLs are then served from it.
+AWS_S3_CUSTOM_DOMAIN = config("AWS_S3_CUSTOM_DOMAIN", default="")
+
+USE_S3 = bool(AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME)
+
+if USE_S3:
+    _S3_COMMON = {
+        "access_key": AWS_ACCESS_KEY_ID,
+        "secret_key": AWS_SECRET_ACCESS_KEY,
+        "bucket_name": AWS_STORAGE_BUCKET_NAME,
+        "endpoint_url": AWS_S3_ENDPOINT_URL or None,
+        "region_name": AWS_S3_REGION_NAME or None,
+        "location": "media",
+        "file_overwrite": False,
+        # ACLs off by default: R2/MinIO reject them; on AWS make the bucket
+        # policy allow public read for media/* except media/resumes/*.
+        "default_acl": None,
+    }
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                **_S3_COMMON,
+                "querystring_auth": False,
+                **(
+                    {"custom_domain": AWS_S3_CUSTOM_DOMAIN}
+                    if AWS_S3_CUSTOM_DOMAIN
+                    else {}
+                ),
+            },
+        },
+        "resumes": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {**_S3_COMMON, "querystring_auth": True},
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        },
+    }
+else:
+    STORAGES = {
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        # Local resumes land under MEDIA_ROOT/resumes/, where direct /media/
+        # access is blocked by protected_media_serve (config/urls.py).
+        "resumes": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        },
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

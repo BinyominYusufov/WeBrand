@@ -1,6 +1,7 @@
 import uuid
 from pathlib import Path
 
+from django.core.files.storage import storages
 from django.db import models
 
 from apps.choices import EXPERIENCE_CHOICES
@@ -25,6 +26,17 @@ def resume_upload_path(instance, filename):
     return f"resumes/{uuid.uuid4().hex}{suffix}"
 
 
+def select_resume_storage():
+    """Resumes are PII: they live in the private 'resumes' storage alias.
+
+    Locally that's the filesystem (direct /media/resumes/ is 404'd in
+    config/urls.py); with S3 creds set it's a querystring-signed S3 storage,
+    so the file never gets a plain public URL. Either way the only sanctioned
+    download path is the signed-token streaming endpoint (LeadResumeView).
+    """
+    return storages["resumes"]
+
+
 class Lead(models.Model):
     kind = models.CharField(max_length=20, choices=KIND_CHOICES, default="lead")
     role = models.CharField(
@@ -44,7 +56,12 @@ class Lead(models.Model):
         max_length=20, choices=EXPERIENCE_CHOICES, blank=True, default=""
     )
     age = models.PositiveSmallIntegerField(null=True, blank=True)
-    resume = models.FileField(upload_to=resume_upload_path, null=True, blank=True)
+    resume = models.FileField(
+        upload_to=resume_upload_path,
+        storage=select_resume_storage,
+        null=True,
+        blank=True,
+    )
     selected = models.JSONField(default=list, blank=True)
     answers = models.JSONField(default=dict, blank=True)
     is_sent_to_telegram = models.BooleanField(default=False)
