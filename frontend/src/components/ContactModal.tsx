@@ -42,7 +42,7 @@ export default function ContactModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-0 lg:p-6"
         >
           {/* Backdrop */}
           <motion.div
@@ -63,7 +63,7 @@ export default function ContactModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: 16 }}
             transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-            className="relative w-full max-w-[880px] max-h-[92vh] overflow-y-auto"
+            className="relative h-[100dvh] max-h-[100dvh] w-full overflow-y-auto lg:h-auto lg:max-h-[90dvh] lg:max-w-[920px]"
           >
             <button
               type="button"

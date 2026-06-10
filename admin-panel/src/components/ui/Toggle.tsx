@@ -22,13 +22,13 @@ export function Toggle({
     >
       {(label || description) && (
         <span>
-          {label && <span className="block text-sm font-semibold text-neutral-700">{label}</span>}
-          {description && <span className="block text-xs text-neutral-500">{description}</span>}
+          {label && <span className="block text-sm font-semibold text-neutral-700 dark:text-neutral-200">{label}</span>}
+          {description && <span className="block text-xs text-neutral-500 dark:text-neutral-400">{description}</span>}
         </span>
       )}
       <span
         className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${
-          checked ? 'bg-brand-600' : 'bg-neutral-300'
+          checked ? 'bg-brand-600' : 'bg-neutral-300 dark:bg-neutral-700'
         }`}
       >
         <span

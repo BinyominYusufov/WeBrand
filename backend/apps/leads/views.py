@@ -1,7 +1,8 @@
 import logging
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveDestroyAPIView
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
@@ -30,6 +31,9 @@ class LeadCreateView(CreateAPIView):
     serializer_class = LeadSerializer
     permission_classes = [AllowAny]
     throttle_classes = [LeadsThrottle]
+    # Accept JSON (contact-form leads) AND multipart (applications with a resume
+    # file). The honeypot is read from validated_data, so it works for both.
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -43,7 +47,8 @@ class LeadCreateView(CreateAPIView):
 
         lead = serializer.save(ip=_client_ip(request))
 
-        sent = send_lead_to_telegram(lead)
+        resume_url = request.build_absolute_uri(lead.resume.url) if lead.resume else None
+        sent = send_lead_to_telegram(lead, resume_url=resume_url)
         if sent and not lead.is_sent_to_telegram:
             lead.is_sent_to_telegram = True
             lead.save(update_fields=["is_sent_to_telegram"])
@@ -61,3 +66,27 @@ class LeadJournalView(ListAPIView):
     serializer_class = LeadListSerializer
     permission_classes = [IsAdminUser]
     queryset = Lead.objects.all().order_by("-created_at")
+
+
+class LeadDetailView(RetrieveDestroyAPIView):
+    """GET/DELETE /api/leads/journal/<pk>/ — admin-only single lead.
+
+    GET reuses the journal serializer (resume as an absolute URL). DELETE removes
+    the lead and best-effort deletes its resume file. Public POST intake and the
+    list journal are untouched. Protected by IsAdminUser (JWT/session staff).
+    """
+
+    serializer_class = LeadListSerializer
+    permission_classes = [IsAdminUser]
+    queryset = Lead.objects.all()
+
+    def perform_destroy(self, instance):
+        # Best-effort: drop the resume file from storage, but never let a storage
+        # hiccup block the row deletion itself.
+        resume = instance.resume
+        if resume:
+            try:
+                resume.delete(save=False)
+            except Exception:
+                logger.warning("Failed to delete resume file for lead %s", instance.pk, exc_info=True)
+        instance.delete()

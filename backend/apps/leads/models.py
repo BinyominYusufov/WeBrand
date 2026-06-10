@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.choices import EXPERIENCE_CHOICES
+
 KIND_CHOICES = [
     ("lead", "Заявка с формы"),
     ("application", "Отклик на вакансию"),
@@ -20,6 +22,12 @@ class Lead(models.Model):
     message = models.TextField(
         blank=True, default="", help_text="Необязательное сообщение (отклик на вакансию)"
     )
+    # --- Applicant fields (only kind=application uses them) ---
+    experience = models.CharField(
+        max_length=20, choices=EXPERIENCE_CHOICES, blank=True, default=""
+    )
+    age = models.PositiveSmallIntegerField(null=True, blank=True)
+    resume = models.FileField(upload_to="resumes/", null=True, blank=True)
     selected = models.JSONField(default=list, blank=True)
     answers = models.JSONField(default=dict, blank=True)
     is_sent_to_telegram = models.BooleanField(default=False)

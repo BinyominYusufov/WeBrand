@@ -14,19 +14,51 @@ export const ICON_MAP: Record<string, LucideIcon> = Object.fromEntries(
   ICON_OPTIONS.map((o) => [o.value, o.Icon]),
 )
 
-// Accent tokens the backend accepts for vacancies (ACCENT_CHOICES).
-export const ACCENT_OPTIONS = ['brand-500', 'brand-600', 'brand-700'] as const
+// Russian captions shown in the admin icon picker. The stored VALUE stays the
+// lucide name (icon ∈ ICON_CHOICES cross-contract — mirrored in the frontend +
+// backend); only the displayed label is localized.
+export const ICON_LABEL: Record<string, string> = {
+  Palette: 'Дизайн',
+  Megaphone: 'Маркетинг',
+  Handshake: 'Партнёрство',
+  Code2: 'Разработка',
+  Target: 'Реклама',
+  Clapperboard: 'Видео',
+}
 
-// Literal classes so they survive Tailwind JIT.
-export const ACCENT_DOT: Record<string, string> = {
-  'brand-500': 'bg-brand-500',
-  'brand-600': 'bg-brand-600',
-  'brand-700': 'bg-brand-700',
-}
-export const ACCENT_TEXT: Record<string, string> = {
-  'brand-500': 'text-brand-500',
-  'brand-600': 'text-brand-600',
-  'brand-700': 'text-brand-700',
-}
+// Employment-type vocabulary offered in the admin form (Russian only). The
+// backend `type` stays a free CharField with no hard choices, so legacy values
+// (e.g. "Полная занятость · Душанбе") still load — the form injects the current
+// value as an extra option when it isn't one of these, so nothing is lost.
+export const TYPE_OPTIONS = ['Полная занятость', 'Частичная занятость'] as const
+
+// NOTE: `accent` is intentionally not surfaced in the admin UI — the backend
+// field is preserved (the public site may style from it) but there is no
+// admin control/option set for it.
 
 export const CATEGORY_OPTIONS = ['Разработка', 'SMM'] as const
+
+// Applicant experience enum — cross-app contract. Keep in sync with
+// backend/apps/choices.py (EXPERIENCE_VALUES) and frontend/src/data/content.ts.
+export const EXPERIENCE_OPTIONS = [
+  'без опыта',
+  'до 1 года',
+  '1–3 года',
+  '3–5 лет',
+  '5+ лет',
+] as const
+
+// Lead quiz direction ids — cross-app contract: mirror of KNOWN_SELECTED in
+// backend/apps/leads/serializers.py and DIRECTIONS in the public ContactForm.
+// Kept here as the single in-app source so the Заявки facet derives labels/order
+// from one place. The leads journal facet only OFFERS directions present in data.
+export const LEAD_DIRECTIONS = ['smm', 'design', 'dev', 'ads', 'unsure'] as const
+export type LeadDirection = (typeof LEAD_DIRECTIONS)[number]
+
+export const LEAD_DIRECTION_LABEL: Record<string, string> = {
+  smm: 'SMM',
+  design: 'Дизайн',
+  dev: 'Разработка',
+  ads: 'Реклама',
+  unsure: 'Не определился',
+}

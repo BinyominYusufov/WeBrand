@@ -11,6 +11,10 @@ export type ApplyTarget = {
   role: string
   /** Human title for the form heading (e.g. "Frontend-разработчик"). */
   title: string
+  /** Applicant requirements set on the vacancy (shown to the candidate). */
+  experienceRequired?: string
+  ageMin?: number | null
+  ageMax?: number | null
 }
 
 type ModalContextType = {

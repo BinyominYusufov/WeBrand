@@ -10,6 +10,8 @@ import {
   ArrowRight,
   Briefcase,
   Loader2,
+  Award,
+  CalendarDays,
   type LucideIcon,
 } from 'lucide-react'
 import { contacts, type Vacancy } from '../data/content'
@@ -131,7 +133,15 @@ export default function Careers() {
                 vacancy={v}
                 index={i}
                 reduce={!!reduce}
-                onApply={() => openApply({ role: v.id, title: v.title })}
+                onApply={() =>
+                  openApply({
+                    role: v.id,
+                    title: v.title,
+                    experienceRequired: v.experience_required,
+                    ageMin: v.age_min,
+                    ageMax: v.age_max,
+                  })
+                }
               />
             ))}
           </div>
@@ -153,6 +163,15 @@ function VacancyCard({
   onApply: () => void
 }) {
   const Icon = ICONS[vacancy.icon] ?? Briefcase
+
+  // Applicant requirements shown to the candidate (all optional).
+  const reqs: { Icon: LucideIcon; label: string }[] = []
+  if (vacancy.experience_required) reqs.push({ Icon: Award, label: vacancy.experience_required })
+  if (vacancy.age_min || vacancy.age_max) {
+    const { age_min: lo, age_max: hi } = vacancy
+    const label = lo && hi ? `${lo}–${hi} лет` : lo ? `от ${lo} лет` : `до ${hi} лет`
+    reqs.push({ Icon: CalendarDays, label })
+  }
 
   return (
     <motion.div
@@ -197,6 +216,21 @@ function VacancyCard({
             </span>
           ))}
         </div>
+
+        {/* Requirements (опыт / возраст / резюме) — shown only when set in the admin */}
+        {reqs.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {reqs.map(({ Icon: ReqIcon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700"
+              >
+                <ReqIcon className="h-3.5 w-3.5" />
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* CTA — opens the contact modal in application mode with this vacancy's
             slug as `role` (see openApply in the parent). */}

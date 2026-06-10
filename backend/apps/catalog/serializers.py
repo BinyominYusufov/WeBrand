@@ -16,6 +16,10 @@ class VacancySerializer(serializers.ModelSerializer):
             "accent",
             "sort_order",
             "is_published",
+            "experience_required",
+            "age_min",
+            "age_max",
+            "resume_required",
         ]
 
 

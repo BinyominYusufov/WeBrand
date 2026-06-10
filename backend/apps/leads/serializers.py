@@ -3,6 +3,7 @@ import re
 from rest_framework import serializers
 
 from apps.catalog.models import Vacancy
+from apps.choices import AGE_MAX, AGE_MIN, EXPERIENCE_VALUES
 
 from .models import Lead
 
@@ -17,11 +18,15 @@ KIND_VALUES = {"lead", "application"}
 KNOWN_SELECTED = {"smm", "design", "dev", "ads", "unsure"}
 MAX_ANSWER_LEN = 500
 
+PDF_CONTENT_TYPES = ("application/pdf", "application/x-pdf")
+MAX_RESUME_BYTES = 10 * 1024 * 1024  # ~10 MB
+
 
 class LeadListSerializer(serializers.ModelSerializer):
     """Read-only projection for the admin journal (GET /api/leads/journal/)."""
 
     kind_display = serializers.CharField(source="get_kind_display", read_only=True)
+    resume = serializers.SerializerMethodField()
 
     class Meta:
         model = Lead
@@ -34,16 +39,28 @@ class LeadListSerializer(serializers.ModelSerializer):
             "contact",
             "phone",
             "message",
+            "experience",
+            "age",
+            "resume",
             "selected",
             "answers",
             "is_sent_to_telegram",
             "created_at",
         ]
 
+    def get_resume(self, obj):
+        """Absolute URL to the uploaded resume (mirrors ProjectSerializer)."""
+        if not obj.resume:
+            return None
+        request = self.context.get("request")
+        url = obj.resume.url
+        return request.build_absolute_uri(url) if request else url
+
 
 class LeadSerializer(serializers.ModelSerializer):
     # Honeypot: not a model field. Bots fill it; humans never see it.
     company = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    resume = serializers.FileField(required=False, allow_null=True)
 
     class Meta:
         model = Lead
@@ -54,12 +71,17 @@ class LeadSerializer(serializers.ModelSerializer):
             "contact",
             "phone",
             "message",
+            "experience",
+            "age",
+            "resume",
             "selected",
             "answers",
             "company",
         ]
         extra_kwargs = {
             "message": {"required": False, "allow_blank": True},
+            "experience": {"required": False, "allow_blank": True},
+            "age": {"required": False, "allow_null": True},
         }
 
     # --- field-level validation --------------------------------------------
@@ -99,6 +121,40 @@ class LeadSerializer(serializers.ModelSerializer):
         value = (value or "").strip()
         if len(value) > 2000:
             raise serializers.ValidationError("Сообщение слишком длинное (макс. 2000).")
+        return value
+
+    def validate_experience(self, value):
+        value = (value or "").strip()
+        if value and value not in EXPERIENCE_VALUES:
+            raise serializers.ValidationError("Недопустимое значение опыта.")
+        return value
+
+    def validate_age(self, value):
+        if value is None:
+            return value
+        if not (AGE_MIN <= value <= AGE_MAX):
+            raise serializers.ValidationError(
+                f"Возраст должен быть от {AGE_MIN} до {AGE_MAX}."
+            )
+        return value
+
+    def validate_resume(self, value):
+        if not value:
+            return value
+        name = (getattr(value, "name", "") or "").lower()
+        content_type = (getattr(value, "content_type", "") or "").lower()
+        if not name.endswith(".pdf") or content_type not in PDF_CONTENT_TYPES:
+            raise serializers.ValidationError("Резюме должно быть файлом PDF.")
+        if value.size > MAX_RESUME_BYTES:
+            raise serializers.ValidationError("Файл резюме слишком большой (макс. 10 МБ).")
+        # Magic-byte sanity check — a real PDF starts with "%PDF-".
+        try:
+            head = value.read(5)
+            value.seek(0)
+            if not head.startswith(b"%PDF-"):
+                raise serializers.ValidationError("Файл не является корректным PDF.")
+        except (AttributeError, OSError):
+            pass
         return value
 
     def validate_selected(self, value):
@@ -144,6 +200,11 @@ class LeadSerializer(serializers.ModelSerializer):
             if not Vacancy.objects.filter(slug=role).exists():
                 raise serializers.ValidationError(
                     {"role": f"Вакансия '{role}' не найдена."}
+                )
+            # A resume (PDF) is always required to apply.
+            if not attrs.get("resume"):
+                raise serializers.ValidationError(
+                    {"resume": "Для отклика необходимо приложить резюме (PDF)."}
                 )
         return attrs
 

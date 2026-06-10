@@ -13,9 +13,10 @@ const jsonInit = (method: string, body: unknown): RequestInit => ({
 export const createVacancy = (data: Partial<Vacancy>) =>
   apiJson<Vacancy>('/api/vacancies/', jsonInit('POST', data))
 
-// Full edit via PUT (all fields supplied by the form).
+// Edit via PATCH (partial) so fields omitted by the form — e.g. accent, which is
+// no longer edited in the admin — keep their existing stored value.
 export const updateVacancy = (slug: string, data: Partial<Vacancy>) =>
-  apiJson<Vacancy>(`/api/vacancies/${slug}/`, jsonInit('PUT', data))
+  apiJson<Vacancy>(`/api/vacancies/${slug}/`, jsonInit('PATCH', data))
 
 // Lightweight inline change (e.g. publish toggle) via PATCH.
 export const patchVacancy = (slug: string, data: Partial<Vacancy>) =>
@@ -76,6 +77,13 @@ export const deleteProject = (id: number) =>
 
 // ---- Leads journal (read-only) ---------------------------------------------
 export const listLeads = () => apiJson<Lead[]>('/api/leads/journal/', { auth: true })
+
+// Single lead, fetched by id for the detail drawer (admin-only).
+export const getLead = (id: number) => apiJson<Lead>(`/api/leads/journal/${id}/`, { auth: true })
+
+// Admin-only delete of a single lead (best-effort resume cleanup is server-side).
+export const deleteLead = (id: number) =>
+  apiJson<void>(`/api/leads/journal/${id}/`, { method: 'DELETE', auth: true })
 
 // ---- Auth ------------------------------------------------------------------
 export const login = (username: string, password: string) =>

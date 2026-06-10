@@ -515,6 +515,16 @@ export const partners: Partner[] = [
   { name: "Javonon Group", logo: "/logos/javonon-group.png" },
 ]
 
+// Applicant experience enum — cross-app contract. Keep in sync with
+// backend/apps/choices.py (EXPERIENCE_VALUES) and admin-panel/src/lib/options.ts.
+export const EXPERIENCE_OPTIONS = [
+  'без опыта',
+  'до 1 года',
+  '1–3 года',
+  '3–5 лет',
+  '5+ лет',
+] as const
+
 export type Vacancy = {
   id: string
   title: string
@@ -523,6 +533,11 @@ export type Vacancy = {
   tags: string[]
   icon: string // lucide-react icon name, mapped in Careers.tsx
   accent: string // brand-scale token used for the role icon tint
+  // Applicant requirements (optional; set in the admin, shown to candidates)
+  experience_required?: string
+  age_min?: number | null
+  age_max?: number | null
+  resume_required?: boolean
 }
 
 export const vacancies: Vacancy[] = [

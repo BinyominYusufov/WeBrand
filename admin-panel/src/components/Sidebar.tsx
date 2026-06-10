@@ -12,24 +12,17 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { logout } = useAuth()
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-neutral-200 bg-white">
+    <aside className="flex h-full w-64 flex-col border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       {/* Brand */}
       <div className="flex items-center gap-2.5 px-5 py-5">
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 shadow-sm shadow-brand-600/30">
-          <svg viewBox="0 0 32 32" className="h-5 w-5">
-            <path
-              d="M7 10l3.2 12L14 13l3.8 9L21 10"
-              fill="none"
-              stroke="#fff"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+          <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden="true">
+            <text x="16" y="22" fontFamily="Manrope, sans-serif" fontSize="18" fontWeight="800" fill="#fff" textAnchor="middle">W</text>
           </svg>
         </div>
         <div className="leading-tight">
-          <div className="text-sm font-extrabold tracking-tight text-neutral-900">Webrand</div>
-          <div className="text-[11px] font-medium uppercase tracking-wider text-neutral-400">
+          <div className="text-sm font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">Webrand</div>
+          <div className="text-[11px] font-medium uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
             Админ-панель
           </div>
         </div>
@@ -45,15 +38,15 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
             className={({ isActive }) =>
               `group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${
                 isActive
-                  ? 'bg-brand-50 text-brand-700'
-                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
+                  ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300'
+                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-100'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <Icon
-                  className={`h-[18px] w-[18px] ${isActive ? 'text-brand-600' : 'text-neutral-400 group-hover:text-neutral-600'}`}
+                  className={`h-[18px] w-[18px] ${isActive ? 'text-brand-600 dark:text-brand-300' : 'text-neutral-400 group-hover:text-neutral-600 dark:text-neutral-500 dark:group-hover:text-neutral-300'}`}
                 />
                 {label}
               </>
@@ -63,10 +56,10 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       {/* Logout */}
-      <div className="border-t border-neutral-200 p-3">
+      <div className="border-t border-neutral-200 dark:border-neutral-800 p-3">
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-neutral-600 transition-colors hover:bg-red-50 hover:text-red-600"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-neutral-600 dark:text-neutral-300 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
         >
           <LogOut className="h-[18px] w-[18px]" />
           Выход

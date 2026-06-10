@@ -31,3 +31,24 @@
     @apply rounded-full bg-neutral-300;
   }
 }
+
+/* Smooth light/dark theme switch. The `theme-transitions` class is added to
+   <html> only for the duration of a toggle (then removed), so it never fires on
+   first load (no flash) and doesn't interfere with normal interaction/transform
+   transitions. Only colour-related properties are animated. Disabled entirely
+   under prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transitions,
+  html.theme-transitions *,
+  html.theme-transitions *::before,
+  html.theme-transitions *::after {
+    transition:
+      background-color 0.22s ease,
+      border-color 0.22s ease,
+      color 0.22s ease,
+      fill 0.22s ease,
+      stroke 0.22s ease,
+      box-shadow 0.22s ease,
+      text-decoration-color 0.22s ease !important;
+  }
+}

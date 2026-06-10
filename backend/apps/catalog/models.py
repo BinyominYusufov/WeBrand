@@ -1,6 +1,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 
+from apps.choices import EXPERIENCE_CHOICES
+
 # lucide-react icon names supported by the ICONS map in Careers.tsx.
 # Anything outside this set falls back to Briefcase on the frontend.
 ICON_CHOICES = [
@@ -48,6 +50,13 @@ class Vacancy(models.Model):
     accent = models.CharField(max_length=10, choices=ACCENT_CHOICES)
     sort_order = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=True)
+    # --- Applicant requirements (all optional; shown to candidates) ---
+    experience_required = models.CharField(
+        max_length=20, choices=EXPERIENCE_CHOICES, blank=True, default=""
+    )
+    age_min = models.PositiveSmallIntegerField(null=True, blank=True)
+    age_max = models.PositiveSmallIntegerField(null=True, blank=True)
+    resume_required = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

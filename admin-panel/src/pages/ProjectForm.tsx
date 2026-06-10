@@ -2,7 +2,8 @@ import { ImagePlus, Upload, X } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Drawer } from '../components/ui/Drawer'
 import { Button } from '../components/ui/Button'
-import { Field, Input, Select, Textarea } from '../components/ui/Field'
+import { Field, Input, Textarea } from '../components/ui/Field'
+import { Listbox } from '../components/ui/Listbox'
 import { ChipInput } from '../components/ui/ChipInput'
 import { Toggle } from '../components/ui/Toggle'
 import { CATEGORY_OPTIONS } from '../lib/options'
@@ -10,7 +11,9 @@ import type { Project } from '../lib/types'
 import { createProject, updateProject, type ProjectInput } from '../api/resources'
 import { useToast } from '../context/ToastContext'
 
-const HEX_RE = /^#[0-9A-Fa-f]{6}$/
+// Accent is no longer edited in the admin UI. New projects get the brand default;
+// edits keep the project's existing stored accent untouched.
+const DEFAULT_ACCENT = '#2B5ED3'
 
 type FormState = {
   name: string
@@ -31,7 +34,7 @@ const empty: FormState = {
   description: '',
   category: 'Разработка',
   tags: [],
-  accent: '#2B5ED3',
+  accent: DEFAULT_ACCENT,
   url: '',
   initials: '',
   sort_order: 0,
@@ -87,7 +90,6 @@ export function ProjectForm({
     if (!form.name.trim()) e.name = 'Укажите название'
     if (!form.subtitle.trim()) e.subtitle = 'Укажите подзаголовок'
     if (!form.description.trim()) e.description = 'Добавьте описание'
-    if (!HEX_RE.test(form.accent)) e.accent = 'Формат HEX, напр. #2B5ED3'
     if (form.url && !/^https?:\/\//i.test(form.url)) e.url = 'Ссылка должна начинаться с http(s)://'
     setErrors(e)
     return Object.keys(e).length === 0
@@ -135,11 +137,11 @@ export function ProjectForm({
         {/* Logo upload */}
         <Field label="Логотип" hint="PNG / JPG / WEBP">
           <div className="flex items-center gap-4">
-            <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50">
+            <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800">
               {currentLogo ? (
                 <img src={currentLogo} alt="" className="max-h-16 max-w-16 object-contain" />
               ) : (
-                <ImagePlus className="h-6 w-6 text-neutral-300" />
+                <ImagePlus className="h-6 w-6 text-neutral-300 dark:text-neutral-600" />
               )}
             </div>
             <div className="flex flex-col gap-2">
@@ -157,7 +159,7 @@ export function ProjectForm({
                 <button
                   type="button"
                   onClick={() => onPickFile(null)}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-neutral-500 hover:text-red-600"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400"
                 >
                   <X className="h-3.5 w-3.5" /> Убрать новый файл
                 </button>
@@ -178,32 +180,17 @@ export function ProjectForm({
           <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={3} error={!!errors.description} />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Категория" required>
-            <Select value={form.category} onChange={(e) => set('category', e.target.value)}>
-              {CATEGORY_OPTIONS.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </Select>
-          </Field>
-          <Field label="Акцент (HEX)" required error={errors.accent}>
-            <div className="flex items-center gap-2">
-              <input
-                type="color"
-                value={HEX_RE.test(form.accent) ? form.accent : '#2B5ED3'}
-                onChange={(e) => set('accent', e.target.value.toUpperCase())}
-                className="h-11 w-12 shrink-0 cursor-pointer rounded-lg border border-neutral-300 bg-white p-1"
-                aria-label="Выбрать цвет"
-              />
-              <Input value={form.accent} onChange={(e) => set('accent', e.target.value)} placeholder="#2B5ED3" error={!!errors.accent} />
-            </div>
-          </Field>
-        </div>
+        <Field label="Категория" required>
+          <Listbox
+            ariaLabel="Категория"
+            value={form.category}
+            onChange={(v) => set('category', v)}
+            options={CATEGORY_OPTIONS.map((c) => ({ value: c, label: c }))}
+          />
+        </Field>
 
         <Field label="Теги" hint="Enter для добавления">
-          <ChipInput value={form.tags} onChange={(t) => set('tags', t)} placeholder="Website, Healthcare…" />
+          <ChipInput value={form.tags} onChange={(t) => set('tags', t)} placeholder="Сайт, Медицина…" />
         </Field>
 
         <div className="grid grid-cols-2 gap-4">
@@ -215,20 +202,14 @@ export function ProjectForm({
           </Field>
         </div>
 
-        <div className="grid grid-cols-2 items-start gap-4">
-          <Field label="Порядок сортировки">
-            <Input type="number" min={0} value={form.sort_order} onChange={(e) => set('sort_order', Number(e.target.value))} />
-          </Field>
-          <div className="pt-7">
-            <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3">
-              <Toggle
-                checked={form.is_published}
-                onChange={(v) => set('is_published', v)}
-                label="Публикация"
-                description={form.is_published ? 'Видна в портфолио' : 'Черновик'}
-              />
-            </div>
-          </div>
+        {/* Порядок задаётся перетаскиванием в таблице проектов — здесь поля нет. */}
+        <div className="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-4 py-3">
+          <Toggle
+            checked={form.is_published}
+            onChange={(v) => set('is_published', v)}
+            label="Публикация"
+            description={form.is_published ? 'Видна в портфолио' : 'Черновик'}
+          />
         </div>
       </div>
     </Drawer>

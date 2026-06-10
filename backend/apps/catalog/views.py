@@ -20,14 +20,20 @@ class ReadOnlyOrAdmin(BasePermission):
 
 
 class VacancyViewSet(viewsets.ModelViewSet):
-    """Public read; admin-only write. Ordered by sort_order."""
+    """Public read; admin-only write.
+
+    Single source of truth for vacancy order: the queryset is ordered by
+    ``sort_order`` (then ``slug`` for stable tie-breaks). Admin (drag-and-drop
+    reorder, which PATCHes ``sort_order``) and the public site consume this same
+    order — neither frontend re-sorts.
+    """
 
     serializer_class = VacancySerializer
     lookup_field = "slug"
     permission_classes = [ReadOnlyOrAdmin]
 
     def get_queryset(self):
-        qs = Vacancy.objects.all().order_by("sort_order", "id")
+        qs = Vacancy.objects.all().order_by("sort_order", "slug")
         # Anonymous/public visitors only ever see published vacancies; staff
         # (admin panel) see everything so they can manage drafts.
         user = self.request.user

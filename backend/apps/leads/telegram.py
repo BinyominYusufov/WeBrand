@@ -31,7 +31,7 @@ def _role_title(slug) -> str:
     return vac.title if vac else slug
 
 
-def _build_message(lead) -> str:
+def _build_message(lead, resume_url=None) -> str:
     kind_label = "🧩 Отклик на вакансию" if lead.kind == "application" else "📩 Новая заявка"
     lines = [f"<b>{kind_label}</b>"]
     if lead.kind == "application" and lead.role:
@@ -40,6 +40,13 @@ def _build_message(lead) -> str:
     lines.append(f"Имя: {_esc(lead.name)}")
     lines.append(f"Контакт: {_esc(lead.contact)}")
     lines.append(f"Телефон: {_esc(lead.phone)}")
+    if lead.kind == "application":
+        if lead.experience:
+            lines.append(f"Опыт: {_esc(lead.experience)}")
+        if lead.age:
+            lines.append(f"Возраст: {_esc(lead.age)}")
+        if resume_url:
+            lines.append(f"Резюме: {_esc(resume_url)}")
     if lead.selected:
         lines.append("Направления: " + _esc(", ".join(lead.selected)))
     if lead.answers:
@@ -52,7 +59,7 @@ def _build_message(lead) -> str:
     return "\n".join(lines)
 
 
-def send_lead_to_telegram(lead) -> bool:
+def send_lead_to_telegram(lead, resume_url=None) -> bool:
     """Return True on confirmed delivery, False otherwise. Never raises."""
     token = settings.TELEGRAM_BOT_TOKEN
     if not token:
@@ -71,7 +78,7 @@ def send_lead_to_telegram(lead) -> bool:
             API_URL.format(token=token),
             json={
                 "chat_id": chat_id,
-                "text": _build_message(lead),
+                "text": _build_message(lead, resume_url=resume_url),
                 "parse_mode": "HTML",
                 "disable_web_page_preview": True,
             },

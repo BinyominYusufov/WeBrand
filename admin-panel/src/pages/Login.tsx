@@ -40,8 +40,8 @@ export default function Login() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" />
         <div className="relative flex items-center gap-2.5">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/15 backdrop-blur">
-            <svg viewBox="0 0 32 32" className="h-6 w-6">
-              <path d="M7 10l3.2 12L14 13l3.8 9L21 10" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            <svg viewBox="0 0 32 32" className="h-6 w-6" aria-hidden="true">
+              <text x="16" y="22" fontFamily="Manrope, sans-serif" fontSize="18" fontWeight="800" fill="#fff" textAnchor="middle">W</text>
             </svg>
           </div>
           <span className="text-lg font-extrabold tracking-tight">Webrand</span>
@@ -58,17 +58,17 @@ export default function Login() {
       </div>
 
       {/* Form panel */}
-      <div className="flex w-full items-center justify-center bg-white px-6 lg:w-1/2">
+      <div className="flex w-full items-center justify-center bg-white dark:bg-neutral-900 px-6 lg:w-1/2">
         <div className="w-full max-w-sm">
           <div className="mb-8">
-            <h2 className="text-2xl font-extrabold tracking-tight text-neutral-900">Вход в панель</h2>
-            <p className="mt-1.5 text-sm text-neutral-500">Войдите с учётной записью администратора.</p>
+            <h2 className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">Вход в панель</h2>
+            <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">Войдите с учётной записью администратора.</p>
           </div>
 
           <form onSubmit={onSubmit} className="space-y-4">
             <Field label="Имя пользователя" required>
               <div className="relative">
-                <User className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-neutral-400" />
+                <User className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
                 <Input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -83,7 +83,7 @@ export default function Login() {
 
             <Field label="Пароль" required>
               <div className="relative">
-                <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-neutral-400" />
+                <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
                 <Input
                   type="password"
                   value={password}
@@ -97,7 +97,7 @@ export default function Login() {
             </Field>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm font-medium text-red-700">
+              <div className="rounded-xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-3.5 py-2.5 text-sm font-medium text-red-700 dark:text-red-300">
                 {error}
               </div>
             )}

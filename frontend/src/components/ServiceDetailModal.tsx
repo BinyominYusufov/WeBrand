@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Check, Clock, Sparkles, Target, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { useModal } from '../context/ModalContext'
@@ -6,6 +6,7 @@ import { directionsForService } from './ContactForm'
 
 export default function ServiceDetailModal() {
   const { serviceDetail, closeServiceDetail, open: openContact } = useModal()
+  const reduce = useReducedMotion()
   const isOpen = !!serviceDetail
 
   const modalRef = useRef<HTMLDivElement>(null)
@@ -87,10 +88,10 @@ export default function ServiceDetailModal() {
             aria-modal="true"
             aria-labelledby="sdm-title"
             tabIndex={-1}
-            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 20 }}
+            transition={reduce ? { duration: 0.15 } : { type: 'spring', damping: 28, stiffness: 320 }}
             className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto outline-none"
           >
             {/* Header gradient */}
@@ -135,9 +136,9 @@ export default function ServiceDetailModal() {
                   {serviceDetail.sub.includes.map((item, i) => (
                     <motion.li
                       key={item}
-                      initial={{ opacity: 0, x: -10 }}
+                      initial={reduce ? false : { opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.15 + i * 0.04 }}
+                      transition={reduce ? { duration: 0 } : { delay: 0.15 + i * 0.04 }}
                       className="flex items-start gap-3 text-neutral-800"
                     >
                       <span className="w-6 h-6 rounded-full bg-brand-50 flex items-center justify-center shrink-0 mt-0.5">

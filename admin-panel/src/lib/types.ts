@@ -10,6 +10,11 @@ export type Vacancy = {
   accent: string
   sort_order: number
   is_published: boolean
+  // Applicant requirements (all optional)
+  experience_required: string
+  age_min: number | null
+  age_max: number | null
+  resume_required: boolean
 }
 
 export type Project = {
@@ -37,6 +42,10 @@ export type Lead = {
   contact: string
   phone: string
   message: string
+  // Applicant fields (only kind=application populates them)
+  experience: string
+  age: number | null
+  resume: string | null // absolute URL or null
   selected: string[]
   answers: Record<string, unknown>
   is_sent_to_telegram: boolean
