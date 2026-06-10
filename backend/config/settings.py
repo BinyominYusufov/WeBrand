@@ -12,7 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Core security ----------------------------------------------------------
 SECRET_KEY = config("SECRET_KEY", default="dev-insecure-change-me")
-DEBUG = config("DEBUG", default=True, cast=bool)
+# Secure by default: DEBUG must be explicitly turned on. Leaving it on exposes
+# full tracebacks, settings, and the URLconf on any error.
+DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv()
 )
@@ -126,6 +128,8 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "60/min",
         "leads": "5/min",
+        # Dedicated cap for the login endpoint (credential brute-force defense).
+        "login": "5/min",
     },
 }
 
@@ -136,6 +140,26 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
+
+# --- Transport / cookie hardening -------------------------------------------
+# Always-safe headers (work over plain HTTP, so on by default).
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SECURE_REFERRER_POLICY = "same-origin"
+X_FRAME_OPTIONS = "DENY"
+
+# HTTPS-only hardening — enable in prod (behind TLS) via SECURE_SSL=True. Left
+# off locally so the http://localhost dev flow and Django admin login still work.
+SECURE_SSL = config("SECURE_SSL", default=False, cast=bool)
+if SECURE_SSL:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # --- Telegram (read in apps/leads/telegram.py) ------------------------------
 TELEGRAM_BOT_TOKEN = config("TELEGRAM_BOT_TOKEN", default="")

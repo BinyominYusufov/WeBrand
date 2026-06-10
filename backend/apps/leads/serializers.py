@@ -49,12 +49,12 @@ class LeadListSerializer(serializers.ModelSerializer):
         ]
 
     def get_resume(self, obj):
-        """Absolute URL to the uploaded resume (mirrors ProjectSerializer)."""
+        """Signature-protected resume URL (not the public /media/ path)."""
         if not obj.resume:
             return None
-        request = self.context.get("request")
-        url = obj.resume.url
-        return request.build_absolute_uri(url) if request else url
+        from .resume_access import signed_resume_url
+
+        return signed_resume_url(self.context.get("request"), obj)
 
 
 class LeadSerializer(serializers.ModelSerializer):

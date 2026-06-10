@@ -27,7 +27,7 @@ The two frontends are separate Vite apps with their own `package.json`; there is
 .venv/Scripts/python.exe manage.py createsuperuser # needed to log into the admin panel / Django admin
 .venv/Scripts/python.exe manage.py runserver 8000
 ```
-Secrets come from `backend/.env` via `python-decouple` (see `.env.example`). There is **no backend test suite** and no linter configured.
+Secrets come from `backend/.env` via `python-decouple` (see `.env.example`). **`DEBUG` defaults to `False`** — set `DEBUG=True` in `backend/.env` for local dev (it also gates Swagger/ReDoc at `/swagger/`, `/redoc/`, which are not registered in prod). There is **no backend test suite** and no linter configured.
 
 **Frontends** (`frontend/` and `admin-panel/`):
 ```bash
@@ -44,14 +44,17 @@ The public Vite on **5173 is started and owned by the human** (HMR). Do **not** 
 
 ### Backend (`backend/`, project `config/`, apps under `apps/`)
 - **`apps/catalog`** — `Vacancy` (PK = `slug`) and `Project` (logo `ImageField`). Both exposed as DRF `ModelViewSet`s: **GET is public, writes require `IsAdminUser`** (the `ReadOnlyOrAdmin` permission). Anonymous reads see only `is_published=True`; staff see drafts too (`get_queryset` branches on `request.user.is_staff`). `ProjectViewSet` accepts multipart so the logo can be uploaded as a file and is serialized back as an **absolute URL** (`ProjectSerializer.to_representation`).
-- **`apps/leads`** — single `Lead` model with `kind ∈ {lead, application}`. `POST /api/leads/` is **public** intake: server-side validation, a `company` honeypot (filled → silent 200, no save), `AnonRateThrottle` (`leads` scope, 5/min), and **fail-safe Telegram delivery** (`telegram.py` never raises; lead is saved even if the token is missing/the call fails; applications route to `TELEGRAM_APPLICATIONS_CHAT_ID` if set). `GET /api/leads/journal/` is an **admin-only** read endpoint added for the admin panel; the public POST is untouched.
-- **Auth** — `djangorestframework-simplejwt`. `POST /api/auth/login/` → `{access, refresh}`, `POST /api/auth/refresh/` → new access. DRF `DEFAULT_AUTHENTICATION_CLASSES` = JWT + Session (Session keeps Django admin working). Access ~60 min, refresh ~7 days.
+- **`apps/leads`** — single `Lead` model with `kind ∈ {lead, application}`. `POST /api/leads/` is **public** intake (multipart — applications must attach a PDF resume, validated by extension + content type + `%PDF-` magic bytes, ≤10 MB): server-side validation, a `company` honeypot (filled → silent 200, no save), `AnonRateThrottle` (`leads` scope, 5/min), and **fail-safe Telegram delivery** (`telegram.py` never raises; lead is saved even if the token is missing/the call fails; applications route to `TELEGRAM_APPLICATIONS_CHAT_ID` if set). `GET /api/leads/journal/` (list) and `/api/leads/journal/<pk>/` (retrieve/delete) are **admin-only** endpoints for the admin panel; the public POST is untouched.
+- **Resumes are PII with signed-URL access** (`apps/leads/resume_access.py`). Uploaded resumes get a random unguessable filename (`resume_upload_path`), and `config/urls.py`'s `protected_media_serve` 404s anything under `/media/resumes/` (other media, e.g. project logos, stays public). The only way to download a resume is `GET /api/leads/journal/<pk>/resume/?token=…` where the token is a `django.core.signing` signature bound to that lead's pk, valid 7 days (links also go to Telegram, hence the long window). The journal serializer and Telegram messages emit these signed URLs — never serve `lead.resume.url` directly.
+- **Auth** — `djangorestframework-simplejwt`. `POST /api/auth/login/` → `{access, refresh}`, `POST /api/auth/refresh/` → new access. Login has its own throttle scope (`login`, 5/min) against brute force. DRF `DEFAULT_AUTHENTICATION_CLASSES` = JWT + Session (Session keeps Django admin working). Access ~60 min, refresh ~7 days.
+- **Security posture** — hardening headers are always on in `settings.py`; HTTPS-only bits (SSL redirect, secure cookies, HSTS, proxy header) switch on via `SECURE_SSL=True` in prod. Django is pinned to the patched `>=6.0.6,<6.1` line — don't downgrade to 6.0.0.
 
 ### Cross-app contracts (the non-obvious coupling)
 These string sets are a contract enforced in multiple places — changing one means changing the others:
 - **Vacancy `slug` ↔ frontend `Vacancy.id`.** The API serializes `slug`; both frontends map `slug → id`. Applying to a vacancy POSTs `{kind:'application', role: <slug>}`.
 - **Quiz direction ids.** `frontend/src/components/ContactForm.tsx` `DIRECTIONS` (`smm/design/dev/ads/unsure`) must match `KNOWN_SELECTED` in `backend/apps/leads/serializers.py`, or valid leads 400.
 - **Constrained vocab.** Vacancy `icon` ∈ 6 lucide names, `accent` ∈ `brand-500/600/700`; Project `category` ∈ `Разработка|SMM`. Defined in `backend/apps/catalog/models.py` (`*_CHOICES`) and mirrored in `frontend` icon/accent maps + `admin-panel/src/lib/options.ts`. The admin form offers exactly these.
+- **Experience enum + age bounds.** `backend/apps/choices.py` defines `EXPERIENCE_VALUES` (Russian strings, stored verbatim on `Lead.experience` and `Vacancy.experience_required`) and `AGE_MIN/AGE_MAX` — mirrored in `admin-panel/src/lib/options.ts` and `frontend/src/data/content.ts`.
 - **CORS.** `CORS_ALLOWED_ORIGINS` whitelists the two frontend dev origins (5173, 5174) + the prod domain.
 
 ### Frontends → API

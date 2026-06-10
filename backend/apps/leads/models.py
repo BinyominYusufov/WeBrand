@@ -1,3 +1,6 @@
+import uuid
+from pathlib import Path
+
 from django.db import models
 
 from apps.choices import EXPERIENCE_CHOICES
@@ -6,6 +9,20 @@ KIND_CHOICES = [
     ("lead", "Заявка с формы"),
     ("application", "Отклик на вакансию"),
 ]
+
+
+def resume_upload_path(instance, filename):
+    """Store resumes under an unguessable random name.
+
+    The original filename is attacker-controlled and was previously kept
+    verbatim, which made stored CVs enumerable/overwritable. We keep only the
+    (validated) ``.pdf`` suffix and randomise the stem so files can't be guessed
+    or collided. Access is additionally gated by a signed URL (see views.py).
+    """
+    suffix = Path(filename or "").suffix.lower()
+    if suffix != ".pdf":
+        suffix = ".pdf"
+    return f"resumes/{uuid.uuid4().hex}{suffix}"
 
 
 class Lead(models.Model):
@@ -27,7 +44,7 @@ class Lead(models.Model):
         max_length=20, choices=EXPERIENCE_CHOICES, blank=True, default=""
     )
     age = models.PositiveSmallIntegerField(null=True, blank=True)
-    resume = models.FileField(upload_to="resumes/", null=True, blank=True)
+    resume = models.FileField(upload_to=resume_upload_path, null=True, blank=True)
     selected = models.JSONField(default=list, blank=True)
     answers = models.JSONField(default=dict, blank=True)
     is_sent_to_telegram = models.BooleanField(default=False)

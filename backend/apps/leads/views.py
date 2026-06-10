@@ -1,17 +1,55 @@
 import logging
 
+from django.core import signing
+from django.http import FileResponse, Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveDestroyAPIView
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.views import APIView
 
 from .models import Lead
+from .resume_access import signed_resume_url, verify_resume_token
 from .serializers import LeadListSerializer, LeadSerializer
 from .telegram import send_lead_to_telegram
 
 logger = logging.getLogger(__name__)
+
+
+class LeadResumeView(APIView):
+    """GET /api/leads/journal/<pk>/resume/?token=… — gated resume download.
+
+    Public route, but the file is only released for a valid, unexpired signature
+    bound to this exact lead pk. Those signatures are minted solely by the
+    admin-only journal endpoints, so possession of a working link already implies
+    a prior authenticated staff request. This keeps the admin panel's plain
+    <a href> download working (no Bearer header on the GET) without exposing
+    resumes at a public, guessable /media/ path.
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get(self, request, pk):
+        token = request.query_params.get("token", "")
+        try:
+            signed_pk = verify_resume_token(token)
+        except signing.BadSignature:
+            raise Http404
+        if str(signed_pk) != str(pk):
+            raise Http404
+        lead = get_object_or_404(Lead, pk=pk)
+        if not lead.resume:
+            raise Http404
+        return FileResponse(
+            lead.resume.open("rb"),
+            content_type="application/pdf",
+            as_attachment=True,
+            filename=f"resume-{lead.pk}.pdf",
+        )
 
 
 class LeadsThrottle(AnonRateThrottle):
@@ -47,7 +85,7 @@ class LeadCreateView(CreateAPIView):
 
         lead = serializer.save(ip=_client_ip(request))
 
-        resume_url = request.build_absolute_uri(lead.resume.url) if lead.resume else None
+        resume_url = signed_resume_url(request, lead)
         sent = send_lead_to_telegram(lead, resume_url=resume_url)
         if sent and not lead.is_sent_to_telegram:
             lead.is_sent_to_telegram = True

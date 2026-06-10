@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
-import { ArrowRight, Sparkles, Rocket, Zap } from 'lucide-react'
+import { ArrowRight, Rocket, Zap } from 'lucide-react'
 import { heroTags } from '../data/content'
 import { useModal } from '../context/ModalContext'
 
@@ -127,22 +127,11 @@ export default function Hero() {
         <motion.div
           initial={reduce ? false : { opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1, type: 'spring' }}
-          className="hidden lg:block absolute top-40 right-[6%] animate-float-delay"
-        >
-          <div className="w-16 h-16 rounded-2xl bg-white shadow-2xl shadow-brand-600/20 -rotate-6 flex items-center justify-center border border-neutral-100">
-            <Sparkles className="w-7 h-7 text-brand-600" />
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={reduce ? false : { opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.2, type: 'spring' }}
-          className="hidden lg:block absolute bottom-32 left-[12%] animate-float-slow"
+          className="hidden lg:block absolute bottom-32 right-[6%] animate-float-slow"
         >
-          <div className="w-14 h-14 rounded-2xl bg-neutral-900 shadow-2xl rotate-12 flex items-center justify-center">
-            <Zap className="w-6 h-6 text-brand-400" />
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 shadow-2xl shadow-brand-600/40 rotate-12 flex items-center justify-center">
+            <Zap className="w-6 h-6 text-white" />
           </div>
         </motion.div>
       </div>
